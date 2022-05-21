@@ -2,7 +2,7 @@
 using EFaturaTakip.DTO.User;
 using EFaturaTakip.Entities;
 
-namespace EFaturaTakip.API.Maaping
+namespace EFaturaTakip.API.Mapping
 {
     public class UserProfile : Profile
     {
