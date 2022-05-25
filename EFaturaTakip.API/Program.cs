@@ -1,3 +1,5 @@
+using EFaturaTakip.API.Filters;
+using EFaturaTakip.API.Middlewares;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.Business.Concrete;
 using EFaturaTakip.DataAccess.Abstract;
@@ -5,6 +7,7 @@ using EFaturaTakip.DataAccess.Concrete;
 using EFaturaTakip.Entities;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -51,6 +54,17 @@ namespace EFaturaTakip.API
              });
             builder.Services.AddDbContext<EFaturaTakipContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbEFaturaTakip")));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            var uiOriginUrl = builder.Configuration.GetSection("AppSettings:UIOriginUrl").Value;
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("eFaturaTakipOrigin", builder =>
+                {
+                    builder.WithOrigins(uiOriginUrl).AllowAnyHeader();
+                });
+            });
+
+
             builder.Services.AddControllers().AddFluentValidation(options =>
             {
                 options.ImplicitlyValidateChildProperties = true;
@@ -58,8 +72,15 @@ namespace EFaturaTakip.API
                 options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             });
 
+            builder.Services.AddScoped<ValidationFilter>();
+            builder.Services.Configure<ApiBehaviorOptions>(options
+                => options.SuppressModelStateInvalidFilter = true);
+
             builder.Services.AddTransient<IUserManager, UserManager>();
             builder.Services.AddTransient<IUserDao, UserDao>();
+            builder.Services.AddTransient<IRoleManager, RoleManager>();
+            builder.Services.AddTransient<IRoleDao, RoleDao>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -71,11 +92,15 @@ namespace EFaturaTakip.API
 
             app.UseHttpsRedirection();
 
+            app.UseCors("eFaturaTakipOrigin");
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.Run();
         }

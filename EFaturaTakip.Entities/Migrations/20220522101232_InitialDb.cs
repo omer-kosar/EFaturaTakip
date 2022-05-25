@@ -28,9 +28,9 @@ namespace EFaturaTakip.Entities.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     ServiceUserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ServicePassword = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -63,6 +63,19 @@ namespace EFaturaTakip.Entities.Migrations
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("031ec04e-49b5-4bde-b9d2-00bf51bf6268"), "TaxPayer" },
+                    { new Guid("0907996f-08d6-49d7-80c3-a4c19ab24375"), "TaxPayer" },
+                    { new Guid("741bf250-5860-4f13-b90e-e1dc00120dd5"), "Admin" },
+                    { new Guid("8e13df41-bda2-4da7-b45d-8ad88b5d22ab"), "Accountant" },
+                    { new Guid("adc752cf-c9a6-49ac-b2a9-590fa6b23528"), "Accountant" },
+                    { new Guid("bb0fb673-acd4-4b6a-ba27-550a92c7b1d5"), "Admin" }
                 });
 
             migrationBuilder.CreateIndex(

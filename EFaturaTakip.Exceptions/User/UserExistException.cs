@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EFaturaTakip.Exceptions.User
 {
-    public class UserExistException : Exception
+    public class UserExistException : BaseBusinessException
     {
         public UserExistException(string message) : base(message)
         {

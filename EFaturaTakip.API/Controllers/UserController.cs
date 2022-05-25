@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EFaturaTakip.API.Filters;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.DTO.User;
 using EFaturaTakip.Entities;
@@ -8,6 +9,7 @@ namespace EFaturaTakip.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(ValidationFilter))]
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
@@ -33,10 +35,7 @@ namespace EFaturaTakip.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UserAddDto model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             var newUser = _mapper.Map<User>(model);
-            newUser.Id = Guid.NewGuid();
             _userManager.Create(newUser);
             return Ok();
         }

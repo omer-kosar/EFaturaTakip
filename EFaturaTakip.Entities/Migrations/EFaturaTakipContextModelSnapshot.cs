@@ -36,6 +36,38 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("741bf250-5860-4f13-b90e-e1dc00120dd5"),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("031ec04e-49b5-4bde-b9d2-00bf51bf6268"),
+                            Name = "TaxPayer"
+                        },
+                        new
+                        {
+                            Id = new Guid("adc752cf-c9a6-49ac-b2a9-590fa6b23528"),
+                            Name = "Accountant"
+                        },
+                        new
+                        {
+                            Id = new Guid("bb0fb673-acd4-4b6a-ba27-550a92c7b1d5"),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("0907996f-08d6-49d7-80c3-a4c19ab24375"),
+                            Name = "TaxPayer"
+                        },
+                        new
+                        {
+                            Id = new Guid("8e13df41-bda2-4da7-b45d-8ad88b5d22ab"),
+                            Name = "Accountant"
+                        });
                 });
 
             modelBuilder.Entity("EFaturaTakip.Entities.User", b =>
@@ -46,7 +78,8 @@ namespace EFaturaTakip.Entities.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

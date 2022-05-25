@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EFaturaTakip.DataAccess\EFaturaTakip.DataAccess.csproj" />
+    <ProjectReference Include="..\EFaturaTakip.DTO\EFaturaTakip.DTO.csproj" />
     <ProjectReference Include="..\EFaturaTakip.Entities\EFaturaTakip.Entities.csproj" />
     <ProjectReference Include="..\EFaturaTakip.Exceptions\EFaturaTakip.Exceptions.csproj" />
   </ItemGroup>

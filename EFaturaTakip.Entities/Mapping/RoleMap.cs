@@ -16,6 +16,23 @@ namespace EFaturaTakip.Entities.Mapping
             builder.Property(t => t.Name)
                 .HasMaxLength(20).IsRequired();
             builder.ToTable("Role");
+
+            builder.HasData(
+               new Role
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Admin"
+               },
+               new Role
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "TaxPayer"
+               },
+               new Role
+               {
+                   Id = Guid.NewGuid(),
+                   Name = "Accountant"
+               });
         }
     }
 }

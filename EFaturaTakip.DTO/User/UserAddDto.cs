@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,23 @@ namespace EFaturaTakip.DTO.User
 {
     public class UserAddDto
     {
+        [JsonProperty("lastName")]
         public string LastName { get; set; }
+        [JsonProperty("firstName")]
         public string FirstName { get; set; }
+        [JsonProperty("email")]
         public string? Email { get; set; }
+        [JsonProperty("phone")]
         public string? Phone { get; set; }
+        [JsonProperty("password")]
         public string Password { get; set; }
+        [JsonProperty("serviceUserName")]
         public string? ServiceUserName { get; set; }
+        [JsonProperty("servicePassword")]
         public string? ServicePassword { get; set; }
+        [JsonProperty("roles")]
+        public List<Guid> Roles { get; set; }
+        [JsonProperty("userType")]
+        public int UserType { get; set; }
     }
 }
