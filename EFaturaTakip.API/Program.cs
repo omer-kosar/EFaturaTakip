@@ -1,5 +1,6 @@
 using EFaturaTakip.API.Filters;
 using EFaturaTakip.API.Middlewares;
+using EFaturaTakip.API.UyumSoft;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.Business.Concrete;
 using EFaturaTakip.DataAccess.Abstract;
@@ -49,7 +50,9 @@ namespace EFaturaTakip.API
                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                          .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
                      ValidateIssuer = false,
-                     ValidateAudience = false
+                     ValidateAudience = false,
+                     RequireExpirationTime = true,
+                     ValidateLifetime = true,
                  };
              });
             builder.Services.AddDbContext<EFaturaTakipContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbEFaturaTakip")));
@@ -75,7 +78,12 @@ namespace EFaturaTakip.API
             builder.Services.AddScoped<ValidationFilter>();
             builder.Services.Configure<ApiBehaviorOptions>(options
                 => options.SuppressModelStateInvalidFilter = true);
-
+            builder.Services.AddHttpClient("UyumSoftClient", config =>
+            {
+                config.BaseAddress = new Uri(builder.Configuration.GetSection("UyumSoft:BaseUrl").Value);
+            });
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddScoped<UyumSoftClient>();
             builder.Services.AddTransient<IUserManager, UserManager>();
             builder.Services.AddTransient<IUserDao, UserDao>();
             builder.Services.AddTransient<IRoleManager, RoleManager>();

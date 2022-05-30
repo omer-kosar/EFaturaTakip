@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EFaturaTakip.Common\EFaturaTakip.Common.csproj" />
     <ProjectReference Include="..\EFaturaTakip.Entities\EFaturaTakip.Entities.csproj" />
-    <ProjectReference Include="..\EFaturaTakip.Repository\EFaturaTakip.Repository.csproj" />
   </ItemGroup>
 
 </Project>

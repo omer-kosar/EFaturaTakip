@@ -8,8 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace EFaturaTakip.API.Controllers
 {
     [Route("api/[controller]")]
@@ -36,6 +34,7 @@ namespace EFaturaTakip.API.Controllers
             var userInfo = _mapper.Map<UserInfoDto>(user);
             string token = CreateToken(loginModel, userInfo.Roles);
             userInfo.Token = token;
+            userInfo.Expirytime = DateTime.Now.AddDays(1);//todo read expiration time form app settings
             return Ok(userInfo);
         }
 
@@ -44,6 +43,8 @@ namespace EFaturaTakip.API.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.MobilePhone, loginModel.PhoneNumber),
+                new Claim("ServiceUserName","Uyumsoft"), //todo: take service username password from current user
+                new Claim("ServiceUserPassword","Uyumsoft")
             };
 
             AddRoleToClaims(claims, roles);
@@ -55,7 +56,7 @@ namespace EFaturaTakip.API.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);

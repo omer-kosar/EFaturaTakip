@@ -10,5 +10,6 @@
         public int Type { get; set; }
         public List<string> Roles { get; set; } = new List<string>();
         public string Token { get; set; }
+        public DateTime Expirytime { get; set; }
     }
 }

@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EFaturaTakip.Common\EFaturaTakip.Common.csproj" />
+    <ProjectReference Include="..\EFaturaTakip.Entities\EFaturaTakip.Entities.csproj" />
   </ItemGroup>
 
 </Project>

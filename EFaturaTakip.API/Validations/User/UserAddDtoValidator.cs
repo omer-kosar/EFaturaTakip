@@ -1,4 +1,4 @@
-﻿using EFaturaTakip.API.Enums;
+﻿using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DTO.User;
 using FluentValidation;
 

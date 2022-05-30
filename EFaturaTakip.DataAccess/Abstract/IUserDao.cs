@@ -1,5 +1,5 @@
-﻿using EFaturaTakip.Entities;
-using EFaturaTakip.Repository.Abstract;
+﻿using EFaturaTakip.Common.Repository.Abstract;
+using EFaturaTakip.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

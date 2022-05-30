@@ -51,3 +51,20 @@ namespace EFaturaTakip.API.Controllers
         }
     }
 }
+
+
+
+//GetInboxInvoiceListResponse resultFaturaList = UyumSoftClient.GetInboxInvoiceList(
+//         new Query
+//         {
+//             PageIndex = 0,
+//             PageSize = 500,
+//             CreateStartDate = DateTime.Now.AddDays(-15),
+//             CreateEndDate = DateTime.Now
+//         });
+
+//List<EFatura> eFaturalar = resultFaturaList.Data.Value.Faturalar;
+//_model = new EFaturaListModel
+//{
+//    Faturalar = ToObservableCollection(eFaturalar.OrderByDescending(i => i.CreateDateUtc))
+//};

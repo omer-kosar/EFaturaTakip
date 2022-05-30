@@ -1,6 +1,6 @@
-﻿using EFaturaTakip.DataAccess.Abstract;
+﻿using EFaturaTakip.Common.Repository.Concrete;
+using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.Entities;
-using EFaturaTakip.Repository.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;

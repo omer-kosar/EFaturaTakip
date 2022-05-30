@@ -1,4 +1,4 @@
-﻿namespace EFaturaTakip.API.Enums
+﻿namespace EFaturaTakip.Common.Enums
 {
     public enum EnumUserType
     {
