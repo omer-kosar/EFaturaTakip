@@ -3,11 +3,13 @@ using EFaturaTakip.API.Middlewares;
 using EFaturaTakip.API.UyumSoft;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.Business.Concrete;
+using EFaturaTakip.Common.EMail;
 using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.DataAccess.Concrete;
 using EFaturaTakip.Entities;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -88,6 +90,12 @@ namespace EFaturaTakip.API
             builder.Services.AddTransient<IUserDao, UserDao>();
             builder.Services.AddTransient<IRoleManager, RoleManager>();
             builder.Services.AddTransient<IRoleDao, RoleDao>();
+
+            var emailConfig = builder.Configuration
+             .GetSection("EmailConfiguration")
+             .Get<EmailConfiguration>();
+            builder.Services.AddSingleton(emailConfig);
+            builder.Services.AddScoped<IEMailSender, EMailSender>();
 
             var app = builder.Build();
 

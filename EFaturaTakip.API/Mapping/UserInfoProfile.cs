@@ -13,7 +13,8 @@ namespace EFaturaTakip.API.Mapping
                 .ForMember(userInfo => userInfo.LastName, user => user.MapFrom(src => src.LastName))
                 .ForMember(userInfo => userInfo.Email, user => user.MapFrom(src => src.Email))
                 .ForMember(userInfo => userInfo.Phone, user => user.MapFrom(src => src.Phone))
-                .ForMember(userInfo => userInfo.Roles, user => user.MapFrom(src => src.Roles.Select(i => i.Role.Name)));
+                .ForMember(userInfo => userInfo.Roles, user => user.MapFrom(src => src.Roles.Select(i => i.Role.Name)))
+                .ForMember(userInfo => userInfo.Id, user => user.MapFrom(src => src.Id));
         }
     }
 }

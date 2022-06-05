@@ -35,6 +35,31 @@ namespace EFaturaTakip.API.UyumSoft
             return await ApiCall<GetInboxInvoiceListResponse>(requestModel);
         }
 
+        public async Task<InboxInviocePdfResponse> GetInboxInvoicePdf(Guid invoiceId, UserInfo userInfo)
+        {
+            var requestModel = new RequestParameters
+            {
+                Action = "GetInboxInvoicePdf",
+                parameters = new GetInboxInvoicePdfParameters
+                {
+                    InvoiceId = invoiceId.ToString(),
+                    userInfo = userInfo
+                }
+            };
+            return await ApiCall<InboxInviocePdfResponse>(requestModel);
+        }
+
+        public async Task<SendDocumentResponse> ApproveInboxInvoiceList(List<Guid> invoiceIdList)
+        {
+            var documentResponseInfoList = CreateDocumentResponseList(invoiceIdList, DocumentResponseStatus.Approved);
+            return await SendDocumentResponse(documentResponseInfoList);
+        }
+
+        public async Task<SendDocumentResponse> DeclineInboxInvoiceList(List<Guid> invoiceIdList)
+        {
+            var documentResponseInfoList = CreateDocumentResponseList(invoiceIdList, DocumentResponseStatus.Declined);
+            return await SendDocumentResponse(documentResponseInfoList);
+        }
         private async Task<SendDocumentResponse> SendDocumentResponse(List<DocumentResponseInfo> response)
         {
             var requestModel = new RequestParameters
@@ -47,17 +72,6 @@ namespace EFaturaTakip.API.UyumSoft
                 }
             };
             return await ApiCall<SendDocumentResponse>(requestModel);
-        }
-        public async Task<SendDocumentResponse> ApproveInboxInvoiceList(List<Guid> invoiceIdList)
-        {
-            var documentResponseInfoList = CreateDocumentResponseList(invoiceIdList, DocumentResponseStatus.Approved);
-            return await SendDocumentResponse(documentResponseInfoList);
-        }
-
-        public async Task<SendDocumentResponse> DeclineInboxInvoiceList(List<Guid> invoiceIdList)
-        {
-            var documentResponseInfoList = CreateDocumentResponseList(invoiceIdList, DocumentResponseStatus.Declined);
-            return await SendDocumentResponse(documentResponseInfoList);
         }
         private List<DocumentResponseInfo> CreateDocumentResponseList(List<Guid> invoiceIdList, DocumentResponseStatus status)
         {
