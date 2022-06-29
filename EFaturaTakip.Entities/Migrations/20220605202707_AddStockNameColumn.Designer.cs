@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220605202707_AddStockNameColumn")]
+    partial class AddStockNameColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,47 +42,22 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e741b641-8fbb-4712-add8-2f32d537f0fc"),
+                            Id = new Guid("127f8629-08ca-4b5e-8ff3-15191ab13746"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("9bc98f2d-00a8-47bd-a0d3-f95336de64b5"),
+                            Id = new Guid("e267bb34-d52b-4d64-a4c7-2709d8d90588"),
                             Name = "TaxPayer"
                         },
                         new
                         {
-                            Id = new Guid("69e05a15-e57e-4431-9de9-9eff5c9676cb"),
+                            Id = new Guid("f9d67d5f-b6be-4bc5-8b47-ed64044f76b3"),
                             Name = "Accountant"
                         });
                 });
 
             modelBuilder.Entity("EFaturaTakip.Entities.Stock", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("money");
-
-                    b.Property<int>("Unit")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ValueAddedTax")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Stock");
-                });
-
-            modelBuilder.Entity("EFaturaTakip.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,8 +82,44 @@ namespace EFaturaTakip.Entities.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("District")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FlatNumber")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Kdv")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("money");
+
+                    b.Property<string>("Province")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Unit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ValueAddedTax")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stock");
+                });
+
+            modelBuilder.Entity("EFaturaTakip.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -117,10 +130,6 @@ namespace EFaturaTakip.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("FlatNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime2");
@@ -139,10 +148,6 @@ namespace EFaturaTakip.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(14)
                         .HasColumnType("nvarchar(14)");
-
-                    b.Property<string>("Province")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("ServicePassword")
                         .IsRequired()

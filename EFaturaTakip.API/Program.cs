@@ -65,7 +65,7 @@ namespace EFaturaTakip.API
             {
                 options.AddPolicy("eFaturaTakipOrigin", builder =>
                 {
-                    builder.WithOrigins(uiOriginUrl).AllowAnyHeader();
+                    builder.WithOrigins(uiOriginUrl).AllowAnyHeader().AllowAnyMethod();
                 });
             });
 
@@ -90,6 +90,8 @@ namespace EFaturaTakip.API
             builder.Services.AddTransient<IUserDao, UserDao>();
             builder.Services.AddTransient<IRoleManager, RoleManager>();
             builder.Services.AddTransient<IRoleDao, RoleDao>();
+            builder.Services.AddTransient<IStockManager, StockManager>();
+            builder.Services.AddTransient<IStockDao, StockDao>();
 
             var emailConfig = builder.Configuration
              .GetSection("EmailConfiguration")

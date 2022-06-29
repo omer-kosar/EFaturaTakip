@@ -14,7 +14,7 @@ namespace EFaturaTakip.API.Controllers
     [ApiController]
     [Authorize]
     [ServiceFilter(typeof(ValidationFilter))]
-    public class InvoiceController : ControllerBase
+    public class InvoicesController : ControllerBase
     {
         private readonly IUserManager _userManager;
 
@@ -22,7 +22,7 @@ namespace EFaturaTakip.API.Controllers
 
         private readonly IEMailSender _emailSender;
 
-        public InvoiceController(UyumSoftClient uyumSoftClient, IUserManager userManager, IEMailSender emailSender)
+        public InvoicesController(UyumSoftClient uyumSoftClient, IUserManager userManager, IEMailSender emailSender)
         {
             _uyumSoftClient = uyumSoftClient;
             _userManager = userManager;

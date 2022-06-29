@@ -21,6 +21,14 @@ namespace EFaturaTakip.Entities.Mapping
             builder.Property(t => t.Email).HasMaxLength(50);
             builder.Property(t => t.ServiceUserName).HasMaxLength(50).IsRequired();
             builder.Property(t => t.ServicePassword).HasMaxLength(50).IsRequired();
+
+            builder.Property(t => t.CommercialRegistrationNumber).HasMaxLength(255);
+            builder.Property(t => t.CentralRegistrationNumber).HasMaxLength(255);
+            builder.Property(t => t.Province).HasMaxLength(20).IsRequired(false);
+            builder.Property(t => t.District).HasMaxLength(20).IsRequired(false);
+            builder.Property(t => t.ApartmentNumber).HasMaxLength(20).IsRequired(false);
+            builder.Property(t => t.FlatNumber).HasMaxLength(20).IsRequired(false);
+            builder.Property(t => t.Country).HasMaxLength(20).IsRequired(false);
             builder.ToTable("User");
         }
     }

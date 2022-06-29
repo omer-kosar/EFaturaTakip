@@ -23,6 +23,7 @@ namespace EFaturaTakip.Entities
             modelBuilder.ApplyConfiguration(new RoleMap());
             modelBuilder.ApplyConfiguration(new UserMap());
             modelBuilder.ApplyConfiguration(new UserRoleMap());
+            modelBuilder.ApplyConfiguration(new StockMap());
         }
     }
 }

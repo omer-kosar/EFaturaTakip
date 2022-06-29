@@ -23,6 +23,20 @@ namespace EFaturaTakip.Entities
         public string ServiceUserName { get; set; }
         public string ServicePassword { get; set; }
         public DateTime? LastLoginDate { get; set; }
+
+        public string CommercialRegistrationNumber { get; set; }
+
+        public string CentralRegistrationNumber { get; set; }
+
+        public string Province { get; set; }
+
+        public string District { get; set; }
+
+        public string ApartmentNumber { get; set; }
+
+        public string FlatNumber { get; set; }
+
+        public string Country { get; set; }
         public virtual ICollection<UserRole> Roles { get; set; }
 
     }

@@ -27,5 +27,26 @@ namespace EFaturaTakip.DTO.User
         public List<Guid> Roles { get; set; }
         [JsonProperty("userType")]
         public int UserType { get; set; }
+
+        [JsonProperty("commercialRegistrationNumber")]
+
+        public string? CommercialRegistrationNumber { get; set; }
+        [JsonProperty("centralRegistrationNumber")]
+
+        public string? CentralRegistrationNumber { get; set; }
+        [JsonProperty("province")]
+
+        public string? Province { get; set; }
+        [JsonProperty("district")]
+
+        public string? District { get; set; }
+        [JsonProperty("apartmentNumber")]
+        public string? ApartmentNumber { get; set; }
+        [JsonProperty("flatNumber")]
+
+        public string? FlatNumber { get; set; }
+
+        [JsonProperty("country")]
+        public string? Country { get; set; }
     }
 }

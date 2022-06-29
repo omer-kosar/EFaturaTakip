@@ -27,6 +27,15 @@ namespace EFaturaTakip.API.Validations.User
             RuleFor(user => user.Roles).Must(roles => roles.Any()).WithMessage("Rol seçiniz");
 
             RuleFor(user => user.UserType).Must(userType => !Enum.IsDefined(typeof(EnumUserType), userType)).WithMessage("Kullanıcı tipi seçiniz");
+
+            RuleFor(c => c.CommercialRegistrationNumber).NotEmpty().WithMessage("Ticari sicil numarası alanı boş olamaz.")
+            .MaximumLength(255).WithMessage("Ticari sicil numarası 255 karakterden fazla olamaz.");
+            RuleFor(c => c.CentralRegistrationNumber).NotEmpty().WithMessage("MERSİS numarası alanı boş olamaz.")
+            .MaximumLength(255).WithMessage("MERSİS numarası 255 karakterden fazla olamaz.");
+            RuleFor(c => c.Province).NotEmpty().WithMessage("İl 20 karakterden fazla olamaz.");
+            RuleFor(c => c.District).NotEmpty().WithMessage("İlçe 20 karakterden fazla olamaz.");
+            RuleFor(c => c.ApartmentNumber).NotEmpty().WithMessage("Bina numarası 20 karakterden fazla olamaz.");
+            RuleFor(c => c.Country).NotEmpty().WithMessage("Ülke 20 karakterden fazla olamaz.");
         }
     }
 }
