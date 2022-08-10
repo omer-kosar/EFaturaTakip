@@ -29,7 +29,6 @@ namespace EFaturaTakip.API.Controllers
             _emailSender = emailSender;
         }
 
-        // GET: api/<InvoiceController>
         [HttpGet("InboxInvoiceList")]
         public async Task<IActionResult> Get(int pageIndex = 0, int pageSize = 700)
         {
@@ -58,7 +57,6 @@ namespace EFaturaTakip.API.Controllers
                 return Ok("Seçmiş olduğunuz faturalar reddedildi.");
             return BadRequest(result.Data.Message);
         }
-        // GET api/<InvoiceController>/5
         [HttpGet("ShowInvoice/{invoiceId}/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> Get(Guid invoiceId, Guid id)
@@ -83,18 +81,6 @@ namespace EFaturaTakip.API.Controllers
             var message = new EMailMessage(new string[] { emailModel.EMailAdress }, "Test email async", "This is the content from our async email.", new EMailAttachment("application/pdf", "fatura", result.Data.Value.InvoicePdfAsByte));
             await _emailSender.SendEmailAsync(message);
             return Ok("Fatura mail olarak gönderildi");
-        }
-
-        // PUT api/<InvoiceController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<InvoiceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

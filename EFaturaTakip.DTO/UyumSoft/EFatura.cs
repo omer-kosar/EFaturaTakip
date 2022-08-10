@@ -2,7 +2,6 @@
 using EFaturaTakip.Common.Providers;
 using EFaturaTakip.Common.Utilities;
 using Newtonsoft.Json;
-using System;
 
 namespace EFaturaTakip.DTO.UyumSoft
 {

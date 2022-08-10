@@ -41,7 +41,7 @@ namespace EFaturaTakip.API.Controllers
         {
             var newStock = _mapper.Map<Stock>(stockModel);
             _stockManager.Create(newStock);
-            return Ok();
+            return Ok("Stok kaydedildi.");
         }
 
         [HttpPut("{id}")]

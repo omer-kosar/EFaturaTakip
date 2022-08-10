@@ -33,7 +33,7 @@ namespace EFaturaTakip.Business.Concrete
             return _userDao.GetUser(filter);
         }
 
-        public bool IsExistUser(string email, string phone)
+        private bool IsExistUser(string email, string phone)
         {
             return _userDao.FindByCondition(i => i.Email.ToLower().Equals(email.ToLower()) || i.Phone.Equals(phone)).Any();
         }
