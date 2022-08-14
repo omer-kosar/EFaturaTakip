@@ -33,7 +33,8 @@ namespace EFaturaTakip.API.Controllers
         {
             var stockItem = _stockManager.GetById(id);
             if (stockItem is null) return BadRequest("Stok bulunamadı.");
-            return Ok(stockItem);
+            var stockItemDto = _mapper.Map<StockAddDto>(stockItem);
+            return Ok(stockItemDto);
         }
 
         [HttpPost("CreateStock")]

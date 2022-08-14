@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220813183142_UserPhoneSeventheenLengthUpdated")]
+    partial class UserPhoneSeventheenLengthUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,16 +37,6 @@ namespace EFaturaTakip.Entities.Migrations
                     b.Property<string>("ApartmentNumber")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("CentralRegistrationNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CommercialRegistrationNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Country")
                         .HasMaxLength(20)
@@ -74,16 +66,6 @@ namespace EFaturaTakip.Entities.Migrations
                     b.Property<string>("Province")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("ServicePassword")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ServiceUserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TaxOffice")
                         .IsRequired()
@@ -125,17 +107,17 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ef7ce1c5-2912-41f5-9574-b9ee13a9d2c9"),
+                            Id = new Guid("7da2b7dc-5086-403f-afb7-b9b91b7419b1"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("0a17d5ea-4b3b-4fed-b2f5-fec6f7dfb933"),
+                            Id = new Guid("644bace0-ccfb-42e5-b221-66b0725bf8f1"),
                             Name = "TaxPayer"
                         },
                         new
                         {
-                            Id = new Guid("518abc2d-f957-4729-833d-c106091ae126"),
+                            Id = new Guid("c4b10318-d550-4f66-ae69-1097b7d9aa6a"),
                             Name = "Accountant"
                         });
                 });
@@ -171,6 +153,28 @@ namespace EFaturaTakip.Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("CentralRegistrationNumber")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("CommercialRegistrationNumber")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("District")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -180,6 +184,10 @@ namespace EFaturaTakip.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FlatNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("LastLoginDate")
                         .HasColumnType("datetime2");
@@ -198,6 +206,20 @@ namespace EFaturaTakip.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(17)
                         .HasColumnType("nvarchar(17)");
+
+                    b.Property<string>("Province")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ServicePassword")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ServiceUserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

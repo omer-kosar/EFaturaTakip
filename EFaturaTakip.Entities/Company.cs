@@ -25,5 +25,11 @@ namespace EFaturaTakip.Entities
         public string ApartmentNumber { get; set; }
         public string FlatNumber { get; set; }
         public int Type { get; set; }
+        public string ServiceUserName { get; set; }
+        public string ServicePassword { get; set; }
+
+        public string CommercialRegistrationNumber { get; set; }
+
+        public string CentralRegistrationNumber { get; set; }
     }
 }

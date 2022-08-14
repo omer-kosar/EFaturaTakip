@@ -14,5 +14,7 @@ namespace EFaturaTakip.Business.Abstract
         void Update(User entity);
         void Delete(User entity);
         User GetUser(Expression<Func<User, bool>> filter);
+        List<User> GetAll();
+
     }
 }

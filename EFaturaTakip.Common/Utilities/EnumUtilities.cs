@@ -21,11 +21,11 @@ namespace EFaturaTakip.Common.Utilities
         {
             try
             {
-                //return "Description";
-                return !(value.GetType()
-                   .GetField(value.ToString())
-                   .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                   .SingleOrDefault() is DescriptionAttribute attribute) ? value.ToString() : attribute?.Description ?? String.Empty;
+                return "Description";
+                //return !(value.GetType()
+                //   .GetField(value.ToString())
+                //   .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                //   .SingleOrDefault() is DescriptionAttribute attribute) ? value.ToString() : attribute?.Description ?? String.Empty;
             }
             catch
             {

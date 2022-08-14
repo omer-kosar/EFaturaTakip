@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EFaturaTakip.API.Filters;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.DTO.Company;
 using EFaturaTakip.Entities;
@@ -8,6 +9,7 @@ namespace EFaturaTakip.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(ValidationFilter))]
     public class CompaniesController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -32,7 +34,8 @@ namespace EFaturaTakip.API.Controllers
         {
             var companyItem = _companyManager.GetById(id);
             if (companyItem is null) return BadRequest("Firma bulunamadı.");
-            return Ok(companyItem);
+            var companyItemDto = _mapper.Map<CompanyAddDto>(companyItem);
+            return Ok(companyItemDto);
         }
 
         [HttpPost("CreateCompany")]

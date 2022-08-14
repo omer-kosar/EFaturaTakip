@@ -20,6 +20,10 @@ namespace EFaturaTakip.API.Mapping.Company
                 .ForMember(dest => dest.ApartmentNumber, opt => opt.MapFrom(src => src.ApartmentNumber))
                 .ForMember(dest => dest.FlatNumber, opt => opt.MapFrom(src => src.FlatNumber))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                 .ForMember(dest => dest.ServiceUserName, opt => opt.MapFrom(src => src.ServiceUserName))
+                .ForMember(dest => dest.ServicePassword, opt => opt.MapFrom(src => src.ServicePassword))
+                .ForMember(dest => dest.CommercialRegistrationNumber, opt => opt.MapFrom(src => src.CommercialRegistrationNumber))
+                .ForMember(dest => dest.CentralRegistrationNumber, opt => opt.MapFrom(src => src.CentralRegistrationNumber))
                 .ReverseMap();
         }
     }

@@ -20,16 +20,21 @@ namespace EFaturaTakip.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("GetList")]
+        public IActionResult GetList()
         {
-            return new string[] { "value1", "value2" };
+            var userList = _userManager.GetAll();
+            var userDtoList = _mapper.Map<List<User>, List<UserListDto>>(userList);
+            return Ok(userDtoList);
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(Guid id)
         {
-            return "value";
+            var userItem = _userManager.GetUser(i => i.Id == id);
+            if (userItem is null) return BadRequest("Kullanıcı bulunamadı.");
+            var userItemDto = _mapper.Map<UserUpdateDto>(userItem);
+            return Ok(userItemDto);
         }
 
         [HttpPost]
@@ -37,17 +42,25 @@ namespace EFaturaTakip.API.Controllers
         {
             var newUser = _mapper.Map<User>(model);
             _userManager.Create(newUser);
-            return Ok();
+            return Ok("Kullanıcı Kaydedildi.");
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(Guid id, [FromBody] UserUpdateDto userModel)
         {
+            var updatedUser = _mapper.Map<User>(userModel);
+            updatedUser.Id = id;
+            _userManager.Update(updatedUser);
+            return Ok("Kullanıcı güncellendi.");
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("delete/{userId}")]
+        public IActionResult Delete(Guid userId)
         {
+            var user = _userManager.GetUser(i => i.Id == userId);
+            if (user is null) return BadRequest("Kullanıcı bulunamadı. Silme işlemi gerçekleştirilemiyor.");
+            _userManager.Delete(user);
+            return Ok("Kullanıcı silindi.");
         }
     }
 }

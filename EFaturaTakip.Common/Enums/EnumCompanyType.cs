@@ -10,9 +10,11 @@ namespace EFaturaTakip.Common.Enums
     public enum EnumCompanyType
     {
         None = 0,
-        [Description("Bireysel")]
+        [Description("Bireysel Kişi")]
         Person = 1,
+        [Description("Şahıs Firması")]
+        SoleProprietorship = 2,
         [Description("Tüzel")]
-        Corporate = 2
+        Corporate = 3
     }
 }

@@ -1,4 +1,4 @@
-﻿using EFaturaTakip.Entities;
+﻿using EFaturaTakip.DTO.Role;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace EFaturaTakip.DTO.User
 {
-    public class UserAddDto : BaseUserDto
+    public class UserUpdateDto : BaseUserDto
     {
-        [JsonProperty("roles")]
-        public List<Guid> Roles { get; set; } = new List<Guid>();
+        public List<RoleDto> Roles { get; set; }
     }
 }

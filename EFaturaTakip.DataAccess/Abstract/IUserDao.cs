@@ -12,5 +12,7 @@ namespace EFaturaTakip.DataAccess.Abstract
     public interface IUserDao : IRepositoryBase<User>
     {
         User GetUser(Expression<Func<User, bool>> filter);
+
+        List<User> GetAllUserWithRoles();
     }
 }

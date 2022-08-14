@@ -42,5 +42,10 @@ namespace EFaturaTakip.Business.Concrete
         {
             _userDao.Update(entity);
         }
+
+        public List<User> GetAll()
+        {
+            return _userDao.GetAllUserWithRoles();
+        }
     }
 }

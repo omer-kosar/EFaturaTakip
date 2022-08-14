@@ -64,7 +64,8 @@ namespace EFaturaTakip.API.Controllers
 
             var user = _userManager.GetUser(i => i.Id == id);
             if (user == null) return BadRequest("Fatura şu an görüntülenemiyor.");
-            var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = user.ServiceUserName, Password = user.ServicePassword });
+            var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = "", Password = "" });
+            //var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = user.ServiceUserName, Password = user.ServicePassword });
             if (!result.Data.IsSucceded)
                 return BadRequest(result.Data.Message);
 
@@ -76,7 +77,8 @@ namespace EFaturaTakip.API.Controllers
         {
             var user = _userManager.GetUser(i => i.Id == emailModel.UserId);
             if (user == null) return BadRequest("Fatura şu an mail olarak gönderilemiyor.");
-            var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = user.ServiceUserName, Password = user.ServicePassword });
+            var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = "", Password = "" });
+            //var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = user.ServiceUserName, Password = user.ServicePassword });
             if (!result.Data.IsSucceded) return BadRequest(result.Data.Message);
             var message = new EMailMessage(new string[] { emailModel.EMailAdress }, "Test email async", "This is the content from our async email.", new EMailAttachment("application/pdf", "fatura", result.Data.Value.InvoicePdfAsByte));
             await _emailSender.SendEmailAsync(message);

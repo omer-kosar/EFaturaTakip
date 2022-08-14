@@ -83,6 +83,19 @@ namespace EFaturaTakip.API.UyumSoft
             }
             return documentResponseInfoList;
         }
+        public async Task<UserAliassesResponse> GetUserAliasses(string vknTckn)
+        {
+            var requestModel = new RequestParameters
+            {
+                Action = "GetUserAliasses",
+                parameters = new IsEInvoiceUserParameters
+                {
+                    VknTckn = vknTckn,
+                    userInfo = _userInfo
+                }
+            };
+            return await ApiCall<UserAliassesResponse>(requestModel);
+        }
         private async Task<T> ApiCall<T>(RequestParameters requestModel)
         {
             var httpClient = _httpClientFactory.CreateClient("UyumSoftClient");

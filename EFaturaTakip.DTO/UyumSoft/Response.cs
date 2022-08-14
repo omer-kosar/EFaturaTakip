@@ -43,6 +43,40 @@ namespace EFaturaTakip.DTO.UyumSoft
         public bool HasNextPage { get; set; }
     }
 
+    public class UserAliassesResponse : BaseResponse
+    {
+        [JsonProperty("Data")]
+        public UserAliassesData Data { get; set; }
+    }
+    public class UserAliassesData : BaseData
+    {
+        [JsonProperty("Value")]
+        public SystemUserWithAlias Value { get; set; }
+    }
+    public class SystemUserWithAlias
+    {
+        public SystemUserDefinition definition { get; set; }
+        public List<SystemUserAlias> receiverboxAliases { get; set; }
+        public List<SystemUserAlias> senderboxAliases { get; set; }
+        public List<SystemUserAlias> despatchReceiverboxAliases { get; set; }
+        public List<SystemUserAlias> despatchSenderboxAliases { get; set; }
+    }
+    public class SystemUserDefinition
+    {
+        public DateTime createDateUtc { get; set; }
+        public string identifier { get; set; }
+        public string title { get; set; }
+        public string type { get; set; }
+        public string systemCreateDate { get; set; }
+    }
+    public class SystemUserAlias
+    {
+        public string alias { get; set; }
+        public int type { get; set; }
+        public string systemCreateDate { get; set; }
+        public string systemDeleteDate { get; set; }
+        public bool enabled { get; set; }
+    }
     public class IsEInvioceUserResponse : BaseResponse
     {
         [JsonProperty("Data")]

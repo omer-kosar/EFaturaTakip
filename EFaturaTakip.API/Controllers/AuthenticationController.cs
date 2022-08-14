@@ -35,6 +35,8 @@ namespace EFaturaTakip.API.Controllers
             string token = CreateToken(loginModel, userInfo.Roles);
             userInfo.Token = token;
             userInfo.Expirytime = DateTime.Now.AddDays(1);//todo read expiration time form app settings
+            user.LastLoginDate = DateTime.Now;
+            _userManager.Update(user);
             return Ok(userInfo);
         }
 

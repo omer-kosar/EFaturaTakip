@@ -19,9 +19,16 @@ namespace EFaturaTakip.DataAccess.Concrete
             _efaturaTakipContext = efaturaTakipContext;
         }
 
+        public List<User> GetAllUserWithRoles()
+        {
+            return _efaturaTakipContext.User.Include(user => user.Roles).ToList();
+        }
+
         public User GetUser(Expression<Func<User, bool>> filter)
         {
-            return _efaturaTakipContext.User.Include(user => user.Roles).ThenInclude(userRole => userRole.Role).SingleOrDefault(filter);
+            return _efaturaTakipContext.User
+                .Include(user => user.Roles)
+                .ThenInclude(userRole => userRole.Role).SingleOrDefault(filter);
         }
     }
 }
