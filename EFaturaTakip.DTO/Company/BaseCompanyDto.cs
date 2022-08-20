@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EFaturaTakip.Common.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,11 @@ namespace EFaturaTakip.DTO.Company
     {
         [JsonProperty("title")]
         public string? Title { get; set; }
-        [JsonProperty("tcknVkn")]
-        public string? TcknVkn { get; set; }
+        [JsonProperty("tcKimlikNo")]
+        public string? TcKimlikNo { get; set; }
+        public string? VergiNo { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         [JsonProperty("taxOffice")]
         public string? TaxOffice { get; set; }
         [JsonProperty("adress")]
@@ -35,6 +39,7 @@ namespace EFaturaTakip.DTO.Company
         public string? FlatNumber { get; set; }
         [JsonProperty("type")]
         public int Type { get; set; }
+        public int CompanySaveType { get; set; } = (int)EnumCompanySaveType.Customer;
         [JsonProperty("serviceUserName")]
         public string? ServiceUserName { get; set; }
         [JsonProperty("servicePassword")]

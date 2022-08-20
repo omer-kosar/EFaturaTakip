@@ -1,11 +1,6 @@
 ﻿using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EFaturaTakip.Common.Repository.Concrete;
 
@@ -21,7 +16,7 @@ namespace EFaturaTakip.DataAccess.Concrete
 
         public List<User> GetAllUserWithRoles()
         {
-            return _efaturaTakipContext.User.Include(user => user.Roles).ToList();
+            return _efaturaTakipContext.User.Include(user => user.Roles).ThenInclude(i => i.Role).ToList();
         }
 
         public User GetUser(Expression<Func<User, bool>> filter)
@@ -29,6 +24,11 @@ namespace EFaturaTakip.DataAccess.Concrete
             return _efaturaTakipContext.User
                 .Include(user => user.Roles)
                 .ThenInclude(userRole => userRole.Role).SingleOrDefault(filter);
+        }
+
+        public List<UserRole> GetUserRoles(Guid userId)
+        {
+            return _efaturaTakipContext.UserRole.Where(i => i.UserId == userId).ToList();
         }
     }
 }

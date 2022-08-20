@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using EFaturaTakip.Common.Enums;
+using EFaturaTakip.DTO.Company;
+using FluentValidation;
 
 namespace EFaturaTakip.API.Validations.Company
 {
@@ -6,8 +8,8 @@ namespace EFaturaTakip.API.Validations.Company
     {
         public CompanyAddValidator()
         {
-            RuleFor(c => c.Title).NotNull().WithMessage("Adı Soyadı/Unvan boş olamaz.").NotEmpty().WithMessage("Adı Soyadı/Unvan boş olamaz.").MaximumLength(255).WithMessage("Adı Soyadı/Unvan boş olamaz. 255 karakterden fazla olamaz.");
-            RuleFor(c => c.TcknVkn).NotNull().WithMessage("TCKN/VKN boş olamaz.").NotEmpty().WithMessage("TCKN/VKN boş olamaz.").MaximumLength(11).WithMessage("TCKN/VKN 255 karakterden fazla olamaz.");
+            RuleFor(c => c.Title).MaximumLength(255).WithMessage("Unvan 255 karakterden fazla olamaz.");
+            RuleFor(c => c.TcKimlikNo).MaximumLength(11).WithMessage("T.C. kimlik numarası 11 karakterden fazla olamaz.");
             RuleFor(c => c.Province).MaximumLength(20).WithMessage("İl 20 karakterden fazla olamaz.");
             RuleFor(c => c.District).MaximumLength(20).WithMessage("İlçe 20 karakterden fazla olamaz.");
             RuleFor(c => c.ApartmentNumber).MaximumLength(20).WithMessage("Bina numarası 20 karakterden fazla olamaz.");
@@ -22,6 +24,37 @@ namespace EFaturaTakip.API.Validations.Company
          .MaximumLength(50).WithMessage("Ticari sicil numarası 50 karakterden fazla olamaz.");
             RuleFor(c => c.CentralRegistrationNumber).NotEmpty().WithMessage("MERSİS numarası alanı boş olamaz.")
             .MaximumLength(50).WithMessage("MERSİS numarası 50 karakterden fazla olamaz.");
+            RuleFor(c => c.VergiNo).NotEmpty().WithMessage("Vergi no boş olamaz.");
+            RuleFor(c => c).Must(ValidateFirstName).WithMessage("Ad boş olamaz.");
+            RuleFor(c => c).Must(ValidateLastName).WithMessage("Soyad boş olamaz.");
+            RuleFor(c => c).Must(ValidateTCKimlikNo).WithMessage("T.C. kimlik no boş olamaz.");
+            RuleFor(c => c).Must(ValidateTitle).WithMessage("Unvan boş olamaz.");
         }
+
+        private bool ValidateFirstName(CompanyAddDto model)
+        {
+            if ((EnumCompanyType)model.Type != EnumCompanyType.Corporate)
+                return !string.IsNullOrWhiteSpace(model.FirstName);
+            return true;
+        }
+        private bool ValidateLastName(CompanyAddDto model)
+        {
+            if ((EnumCompanyType)model.Type != EnumCompanyType.Corporate)
+                return !string.IsNullOrWhiteSpace(model.LastName);
+            return true;
+        }
+        private bool ValidateTCKimlikNo(CompanyAddDto model)
+        {
+            if ((EnumCompanyType)model.Type != EnumCompanyType.Corporate)
+                return !string.IsNullOrWhiteSpace(model.TcKimlikNo);
+            return true;
+        }
+        private bool ValidateTitle(CompanyAddDto model)
+        {
+            if ((EnumCompanyType)model.Type == EnumCompanyType.Corporate)
+                return !string.IsNullOrWhiteSpace(model.Title);
+            return true;
+        }
+
     }
 }

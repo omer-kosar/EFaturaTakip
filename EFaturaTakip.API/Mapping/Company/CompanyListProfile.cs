@@ -12,7 +12,7 @@ namespace EFaturaTakip.API.Mapping.Company
             CreateMap<Entities.Company, CompanyListDto>()
             .ForMember(dest => dest.CompanyId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-            .ForMember(dest => dest.TcknVkn, opt => opt.MapFrom(src => src.TcknVkn))
+            .ForMember(dest => dest.TcKimlikNo, opt => opt.MapFrom(src => src.TcKimlikNo))
             .ForMember(dest => dest.TaxOffice, opt => opt.MapFrom(src => src.TaxOffice))
             .ForMember(dest => dest.Adress, opt => opt.MapFrom(src => src.Adress))
             .ForMember(dest => dest.Province, opt => opt.MapFrom(src => src.Province))

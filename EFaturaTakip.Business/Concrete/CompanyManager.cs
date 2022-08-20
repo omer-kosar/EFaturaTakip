@@ -1,4 +1,5 @@
 ﻿using EFaturaTakip.Business.Abstract;
+using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.Entities;
 using EFaturaTakip.Exceptions.Company;
@@ -21,9 +22,11 @@ namespace EFaturaTakip.Business.Concrete
 
         public void Create(Company company)
         {
-            if (IsExistCompany(company.TcknVkn))
-                throw new CompanyExistException("Belirtilen TCKN/VKN ile firma kaydı bulunmaktadır.Firma kaydedilemedi.");
+            EnumCompanyType companyType = (EnumCompanyType)company.Type;
+            string tcknVkn = companyType == EnumCompanyType.Corporate ? company.VergiNo : company.TcKimlikNo;
             company.Id = Guid.NewGuid();
+            if (IsExistCompany(tcknVkn, companyType, company.Id))
+                throw new CompanyExistException("Belirtilen TCKN/VKN ile firma kaydı bulunmaktadır.Firma kaydedilemedi.");
             _companyDao.Create(company);
         }
 
@@ -44,14 +47,18 @@ namespace EFaturaTakip.Business.Concrete
 
         public void Update(Company company)
         {
-            var existCompany = _companyDao.FindByCondition(i => i.TcknVkn.Equals(company.TcknVkn) && i.Id != company.Id).Any();
+            EnumCompanyType companyType = (EnumCompanyType)company.Type;
+            string tcknVkn = companyType == EnumCompanyType.Corporate ? company.VergiNo : company.TcKimlikNo;
+            var existCompany = IsExistCompany(tcknVkn, companyType, company.Id);
             if (existCompany)
                 throw new CompanyExistException("Belirtilen TCKN/VKN ile firma kaydı bulunmaktadır.Firma güncellenemedi.");
             _companyDao.Update(company);
         }
-        private bool IsExistCompany(string tcknVkn)
+        private bool IsExistCompany(string tcknVkn, EnumCompanyType companyType, Guid companyId)
         {
-            return _companyDao.FindByCondition(i => i.TcknVkn.Equals(tcknVkn)).Any();
+            if (companyType == EnumCompanyType.Corporate)
+                return _companyDao.FindByCondition(i => i.VergiNo.Equals(tcknVkn) && i.Id != companyId).Any();
+            return _companyDao.FindByCondition(i => i.TcKimlikNo.Equals(tcknVkn) && i.Id != companyId).Any();
         }
     }
 }

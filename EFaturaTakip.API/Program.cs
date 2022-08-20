@@ -94,6 +94,7 @@ namespace EFaturaTakip.API
             builder.Services.AddTransient<IStockDao, StockDao>();
             builder.Services.AddTransient<ICompanyManager, CompanyManager>();
             builder.Services.AddTransient<ICompanyDao, CompanyDao>();
+            builder.Services.AddTransient<IUserRoleDao, UserRoleDao>();
 
             var emailConfig = builder.Configuration
              .GetSection("EmailConfiguration")

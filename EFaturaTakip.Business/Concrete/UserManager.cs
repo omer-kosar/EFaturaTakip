@@ -9,10 +9,11 @@ namespace EFaturaTakip.Business.Concrete
     public class UserManager : IUserManager
     {
         private readonly IUserDao _userDao;
-
-        public UserManager(IUserDao userDao)
+        private readonly IUserRoleDao _userRoleDao;
+        public UserManager(IUserDao userDao, IUserRoleDao userRoleDao)
         {
             _userDao = userDao;
+            _userRoleDao = userRoleDao;
         }
 
         public void Create(User user)
@@ -40,6 +41,15 @@ namespace EFaturaTakip.Business.Concrete
 
         public void Update(User entity)
         {
+            _userDao.Update(entity);
+        }
+        public void UpdateWithRoles(User entity, List<Guid> roles)
+        {
+            var recordedRoles = _userDao.GetUserRoles(entity.Id);
+            var deletedRoles = recordedRoles.Where(i => !roles.Contains(i.RoleId)).ToList();
+            var addedRoles = roles.Where(i => !recordedRoles.Select(r => r.RoleId).Contains(i)).Select(i => new UserRole { RoleId = i, UserId = entity.Id }).ToList();
+            _userRoleDao.RemoveRange(deletedRoles);
+            entity.Roles = addedRoles;
             _userDao.Update(entity);
         }
 

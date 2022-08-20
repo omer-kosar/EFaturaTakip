@@ -42,7 +42,7 @@ namespace EFaturaTakip.Common.Repository.Concrete
 
         public void Update(T entity)
         {
-            EFaturaTakipContext.Set<T>().Update(entity);
+            EFaturaTakipContext.Update<T>(entity);
             Save();
         }
 

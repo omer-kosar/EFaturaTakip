@@ -50,7 +50,7 @@ namespace EFaturaTakip.API.Controllers
         {
             var updatedUser = _mapper.Map<User>(userModel);
             updatedUser.Id = id;
-            _userManager.Update(updatedUser);
+            _userManager.UpdateWithRoles(updatedUser, userModel.Roles.Select(i => i.Id).ToList());
             return Ok("Kullanıcı güncellendi.");
         }
 

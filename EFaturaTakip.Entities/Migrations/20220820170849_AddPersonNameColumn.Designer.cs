@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220820170849_AddPersonNameColumn")]
+    partial class AddPersonNameColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace EFaturaTakip.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("CompanySaveType")
-                        .HasColumnType("int");
 
                     b.Property<string>("Country")
                         .HasMaxLength(20)
@@ -139,17 +138,17 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a82e3d9f-48e5-4766-a406-36f1dcaeae4f"),
+                            Id = new Guid("5cdcaf89-8a2f-43aa-a535-dd734e334936"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("14b47dd5-73f4-4c09-a98e-d1732fdd529d"),
+                            Id = new Guid("8a38321c-59b0-4cff-9d9a-910dbf55475c"),
                             Name = "TaxPayer"
                         },
                         new
                         {
-                            Id = new Guid("a513bf44-7e12-4a2e-b62b-6776197a4ea1"),
+                            Id = new Guid("3fc30c56-e360-47c3-82db-3591983ae0ea"),
                             Name = "Accountant"
                         });
                 });
@@ -185,9 +184,6 @@ namespace EFaturaTakip.Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -221,8 +217,6 @@ namespace EFaturaTakip.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
                     b.ToTable("User", (string)null);
                 });
 
@@ -247,17 +241,6 @@ namespace EFaturaTakip.Entities.Migrations
                     b.ToTable("UserRole", (string)null);
                 });
 
-            modelBuilder.Entity("EFaturaTakip.Entities.User", b =>
-                {
-                    b.HasOne("EFaturaTakip.Entities.Company", "Company")
-                        .WithMany("Users")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("EFaturaTakip.Entities.UserRole", b =>
                 {
                     b.HasOne("EFaturaTakip.Entities.Role", "Role")
@@ -275,11 +258,6 @@ namespace EFaturaTakip.Entities.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EFaturaTakip.Entities.Company", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("EFaturaTakip.Entities.Role", b =>

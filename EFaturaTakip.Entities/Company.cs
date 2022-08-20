@@ -13,7 +13,10 @@ namespace EFaturaTakip.Entities
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string TcknVkn { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string TcKimlikNo { get; set; }
+        public string VergiNo { get; set; }
         public string TaxOffice { get; set; }
         public string Adress { get; set; }
         public string Province { get; set; }
@@ -25,11 +28,15 @@ namespace EFaturaTakip.Entities
         public string ApartmentNumber { get; set; }
         public string FlatNumber { get; set; }
         public int Type { get; set; }
+
+        public int CompanySaveType { get; set; }
         public string ServiceUserName { get; set; }
         public string ServicePassword { get; set; }
 
         public string CommercialRegistrationNumber { get; set; }
 
         public string CentralRegistrationNumber { get; set; }
+
+        public virtual ICollection<User> Users { get; set; } = new List<User>();
     }
 }

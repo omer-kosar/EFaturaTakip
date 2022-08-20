@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace EFaturaTakip.API.Validations.User
 {
-    public class UserAddDtoValidator : AbstractValidator<UserAddDto>
+    public class UserUpdateDtoValidator : AbstractValidator<UserUpdateDto>
     {
-        public UserAddDtoValidator()
+        public UserUpdateDtoValidator()
         {
             RuleFor(user => user.FirstName).NotEmpty().WithMessage("Adı boş olamaz.")
                 .MaximumLength(50).WithMessage("Kullanıcı adı 50 karakterden fazla olamaz.");

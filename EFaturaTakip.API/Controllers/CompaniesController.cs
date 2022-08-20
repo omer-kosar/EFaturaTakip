@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EFaturaTakip.API.Filters;
+using EFaturaTakip.API.UyumSoft;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.DTO.Company;
 using EFaturaTakip.Entities;
@@ -14,11 +15,12 @@ namespace EFaturaTakip.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ICompanyManager _companyManager;
-
-        public CompaniesController(ICompanyManager companyManager, IMapper mapper)
+        private readonly UyumSoftClient _uyumSoftClient;
+        public CompaniesController(ICompanyManager companyManager, IMapper mapper, UyumSoftClient uyumSoftClient)
         {
             _companyManager = companyManager;
             _mapper = mapper;
+            _uyumSoftClient = uyumSoftClient;
         }
 
         [HttpGet("GetList")]
@@ -62,6 +64,13 @@ namespace EFaturaTakip.API.Controllers
             if (stock == null) return BadRequest("Firma bulunamadı. Silme işlemi gerçekleştirilemiyor.");
             _companyManager.Delete(stock);
             return Ok("Firma silindi.");
+        }
+        [HttpGet("getCompanyTitle")]
+        public async Task<IActionResult> GetTitle(string vergiNo)
+        {
+            var result = await _uyumSoftClient.GetUserAliasses(vergiNo);
+            if (result.Data.IsSucceded && result.Data.Value != null) return Ok(result.Data.Value.definition.title);
+            return Ok("Unvan bulunamadı.");
         }
     }
 }
