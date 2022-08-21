@@ -11,8 +11,8 @@ namespace EFaturaTakip.Entities.Mapping
 
             builder.Property(t => t.Title).HasMaxLength(255).IsRequired(false);
             builder.Property(t => t.TcKimlikNo).HasMaxLength(11).IsRequired(false);
-            builder.Property(t => t.FirstName).HasMaxLength(11).IsRequired(false);
-            builder.Property(t => t.LastName).HasMaxLength(11).IsRequired(false);
+            builder.Property(t => t.FirstName).HasMaxLength(50).IsRequired(false);
+            builder.Property(t => t.LastName).HasMaxLength(50).IsRequired(false);
             builder.Property(t => t.VergiNo).HasMaxLength(10).IsRequired(true);
             builder.Property(t => t.Province).HasMaxLength(20).IsRequired(false);
             builder.Property(t => t.District).HasMaxLength(20).IsRequired(false);

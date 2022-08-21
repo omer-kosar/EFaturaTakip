@@ -61,7 +61,6 @@ namespace EFaturaTakip.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(Guid invoiceId, Guid id)
         {
-
             var user = _userManager.GetUser(i => i.Id == id);
             if (user == null) return BadRequest("Fatura şu an görüntülenemiyor.");
             var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, new UserInfo { Username = "", Password = "" });

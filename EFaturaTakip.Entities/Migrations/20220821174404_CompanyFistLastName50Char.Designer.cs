@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220821174404_CompanyFistLastName50Char")]
+    partial class CompanyFistLastName50Char
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

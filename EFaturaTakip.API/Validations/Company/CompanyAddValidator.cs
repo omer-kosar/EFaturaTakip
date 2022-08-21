@@ -21,9 +21,13 @@ namespace EFaturaTakip.API.Validations.Company
             RuleFor(user => user.ServicePassword).NotEmpty().WithMessage("Servis parolası adı boş olamaz.")
             .MaximumLength(50).WithMessage("Servis kullanıcı parolası 50 karakterden fazla olamaz.");
             RuleFor(c => c.CommercialRegistrationNumber).NotEmpty().WithMessage("Ticari sicil numarası alanı boş olamaz.")
-         .MaximumLength(50).WithMessage("Ticari sicil numarası 50 karakterden fazla olamaz.");
+            .MaximumLength(50).WithMessage("Ticari sicil numarası 50 karakterden fazla olamaz.");
             RuleFor(c => c.CentralRegistrationNumber).NotEmpty().WithMessage("MERSİS numarası alanı boş olamaz.")
             .MaximumLength(50).WithMessage("MERSİS numarası 50 karakterden fazla olamaz.");
+
+            RuleFor(c => c.FirstName).MaximumLength(50).WithMessage("Adı 50 karakterden fazla olamaz.");
+            RuleFor(c => c.LastName).MaximumLength(50).WithMessage("Soyadı 50 karakterden fazla olamaz.");
+
             RuleFor(c => c.VergiNo).NotEmpty().WithMessage("Vergi no boş olamaz.");
             RuleFor(c => c).Must(ValidateFirstName).WithMessage("Ad boş olamaz.");
             RuleFor(c => c).Must(ValidateLastName).WithMessage("Soyad boş olamaz.");

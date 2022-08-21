@@ -25,6 +25,10 @@ namespace EFaturaTakip.API.Mapping.Company
             .ForMember(dest => dest.FaxNumber, opt => opt.MapFrom(src => src.FlatNumber))
             .ForMember(dest => dest.TypeDescription, opt => opt.MapFrom(src => EnumUtilities.GetDescription(typeof(EnumCompanyType), src.Type)))
             .ReverseMap();
+
+            CreateMap<Entities.Company, CompanySearchDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Type == (int)EnumCompanyType.Corporate ? src.Title : $"{src.FirstName} {src.LastName}"));
         }
     }
 }

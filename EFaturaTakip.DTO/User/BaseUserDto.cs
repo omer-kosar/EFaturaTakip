@@ -9,6 +9,7 @@ namespace EFaturaTakip.DTO.User
 {
     public class BaseUserDto
     {
+        public Guid? CompanyId { get; set; }
         [JsonProperty("lastName")]
         public string? LastName { get; set; }
         [JsonProperty("firstName")]
@@ -19,7 +20,7 @@ namespace EFaturaTakip.DTO.User
         public string? Phone { get; set; }
         [JsonProperty("password")]
         public string? Password { get; set; }
-             
+
         [JsonProperty("userType")]
         public int UserType { get; set; }
     }

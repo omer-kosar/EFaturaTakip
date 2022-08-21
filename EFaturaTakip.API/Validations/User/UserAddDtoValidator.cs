@@ -8,6 +8,7 @@ namespace EFaturaTakip.API.Validations.User
     {
         public UserAddDtoValidator()
         {
+            RuleFor(user => user.CompanyId).NotEmpty().WithMessage("Firma seçiniz olamaz.");
             RuleFor(user => user.FirstName).NotEmpty().WithMessage("Adı boş olamaz.")
                 .MaximumLength(50).WithMessage("Kullanıcı adı 50 karakterden fazla olamaz.");
 

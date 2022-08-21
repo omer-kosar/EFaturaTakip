@@ -72,5 +72,12 @@ namespace EFaturaTakip.API.Controllers
             if (result.Data.IsSucceded && result.Data.Value != null) return Ok(result.Data.Value.definition.title);
             return Ok("Unvan bulunamadı.");
         }
+        [HttpGet("SearchCompany")]
+        public IActionResult SearchCompany(string? name = "", int take = 20)
+        {
+            var result = _companyManager.SearchCompany(name, take);
+            var companyListDto = _mapper.Map<List<CompanySearchDto>>(result);
+            return Ok(companyListDto);
+        }
     }
 }

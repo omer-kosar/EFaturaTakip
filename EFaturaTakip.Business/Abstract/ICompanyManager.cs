@@ -14,5 +14,6 @@ namespace EFaturaTakip.Business.Abstract
         void Delete(Company company);
         Company GetById(Guid id);
         List<Company> GetAll();
+        List<Company> SearchCompany(string name, int take = 20);
     }
 }

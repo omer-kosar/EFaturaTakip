@@ -54,6 +54,11 @@ namespace EFaturaTakip.Business.Concrete
                 throw new CompanyExistException("Belirtilen TCKN/VKN ile firma kaydı bulunmaktadır.Firma güncellenemedi.");
             _companyDao.Update(company);
         }
+        public List<Company> SearchCompany(string name, int take = 20)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return _companyDao.FindAll().Take(take).ToList();
+            return _companyDao.FindByCondition(i => i.Title.Contains(name) || i.FirstName.Contains(name) || i.LastName.Contains(name)).Take(take).ToList();
+        }
         private bool IsExistCompany(string tcknVkn, EnumCompanyType companyType, Guid companyId)
         {
             if (companyType == EnumCompanyType.Corporate)
