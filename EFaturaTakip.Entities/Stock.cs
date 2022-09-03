@@ -11,6 +11,7 @@ namespace EFaturaTakip.Entities
     public class Stock
     {
         public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
         public string Name { get; set; }
 
         [Column(TypeName = "money")]
@@ -19,5 +20,7 @@ namespace EFaturaTakip.Entities
         public int Unit { get; set; }
 
         public int ValueAddedTax { get; set; }
+
+        public virtual Company Company { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220821203510_UserTableCompanyIdRequiredCanceled")]
+    partial class UserTableCompanyIdRequiredCanceled
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace EFaturaTakip.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CompanySaveType")
                         .HasColumnType("int");
@@ -85,24 +84,23 @@ namespace EFaturaTakip.Entities.Migrations
                         .HasMaxLength(17)
                         .HasColumnType("nvarchar(17)");
 
-                    b.Property<Guid?>("MusavirId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Province")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("ServicePassword")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ServiceUserName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("TaxOffice")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TcKimlikNo")
                         .HasMaxLength(11)
@@ -116,14 +114,11 @@ namespace EFaturaTakip.Entities.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("VergiNo")
+                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("MusavirId");
 
                     b.ToTable("Company", (string)null);
                 });
@@ -146,17 +141,17 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("03a5441a-25b9-4714-9b9d-90b177567987"),
+                            Id = new Guid("04b8549e-dc7d-45b1-8ead-69c4c3921fde"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("3a3d3e1f-842c-4f4b-ab76-16ece6b6e3aa"),
+                            Id = new Guid("5047bbdd-1dc7-4fe6-9df6-82207ccd9000"),
                             Name = "TaxPayer"
                         },
                         new
                         {
-                            Id = new Guid("52d44f49-5f11-4d74-a460-a467234ad5e1"),
+                            Id = new Guid("51b89105-12f0-4cfc-8050-b43a85a9f62c"),
                             Name = "Accountant"
                         });
                 });
@@ -259,22 +254,6 @@ namespace EFaturaTakip.Entities.Migrations
                     b.ToTable("UserRole", (string)null);
                 });
 
-            modelBuilder.Entity("EFaturaTakip.Entities.Company", b =>
-                {
-                    b.HasOne("EFaturaTakip.Entities.Company", "CompanyParent")
-                        .WithMany("Companies")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("EFaturaTakip.Entities.User", "Musavir")
-                        .WithMany("Companies")
-                        .HasForeignKey("MusavirId");
-
-                    b.Navigation("CompanyParent");
-
-                    b.Navigation("Musavir");
-                });
-
             modelBuilder.Entity("EFaturaTakip.Entities.Stock", b =>
                 {
                     b.HasOne("EFaturaTakip.Entities.Company", "Company")
@@ -316,8 +295,6 @@ namespace EFaturaTakip.Entities.Migrations
 
             modelBuilder.Entity("EFaturaTakip.Entities.Company", b =>
                 {
-                    b.Navigation("Companies");
-
                     b.Navigation("Stocks");
 
                     b.Navigation("Users");
@@ -330,8 +307,6 @@ namespace EFaturaTakip.Entities.Migrations
 
             modelBuilder.Entity("EFaturaTakip.Entities.User", b =>
                 {
-                    b.Navigation("Companies");
-
                     b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618

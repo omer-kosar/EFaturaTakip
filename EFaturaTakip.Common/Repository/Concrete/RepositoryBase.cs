@@ -50,5 +50,10 @@ namespace EFaturaTakip.Common.Repository.Concrete
         {
             return EFaturaTakipContext.Set<T>().SingleOrDefault(expression);
         }
+
+        public IQueryable<T> FindByConditionAsQueryable(Expression<Func<T, bool>> expression)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

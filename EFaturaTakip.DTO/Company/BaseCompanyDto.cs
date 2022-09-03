@@ -10,6 +10,7 @@ namespace EFaturaTakip.DTO.Company
 {
     public class BaseCompanyDto
     {
+        public Guid? CompanyId { get; set; }
         [JsonProperty("title")]
         public string? Title { get; set; }
         [JsonProperty("tcKimlikNo")]
@@ -40,10 +41,7 @@ namespace EFaturaTakip.DTO.Company
         [JsonProperty("type")]
         public int Type { get; set; }
         public int CompanySaveType { get; set; } = (int)EnumCompanySaveType.Customer;
-        [JsonProperty("serviceUserName")]
-        public string? ServiceUserName { get; set; }
-        [JsonProperty("servicePassword")]
-        public string? ServicePassword { get; set; }
+      
         //ticari sicil no
         [JsonProperty("commercialRegistrationNumber")]
         public string? CommercialRegistrationNumber { get; set; }

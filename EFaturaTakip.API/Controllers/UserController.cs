@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EFaturaTakip.API.Filters;
 using EFaturaTakip.Business.Abstract;
+using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DTO.User;
 using EFaturaTakip.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace EFaturaTakip.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(ValidationFilter))]
+    [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.TaxPayer })]
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
@@ -61,6 +63,20 @@ namespace EFaturaTakip.API.Controllers
             if (user is null) return BadRequest("Kullanıcı bulunamadı. Silme işlemi gerçekleştirilemiyor.");
             _userManager.Delete(user);
             return Ok("Kullanıcı silindi.");
+        }
+
+        [HttpGet("searchfinancialadvisor")]
+        public IActionResult SearchCompany(string? name = "", int take = 20)
+        {
+            var result = _userManager.SearchFinancialAdvisor(name, take);
+            var financialAdvisorListDto = _mapper.Map<List<FinancialAdvisorSearchDto>>(result);
+            return Ok(financialAdvisorListDto);
+        }
+        [HttpGet("ChangeFinancialAdvisor")]
+        public IActionResult ChangeFinancialAdvisor(Guid advisorId, Guid companyId)
+        {
+            _userManager.ChangeAdvisor(advisorId, companyId);
+            return Ok();
         }
     }
 }

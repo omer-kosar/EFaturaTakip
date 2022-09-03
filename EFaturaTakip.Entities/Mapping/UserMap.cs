@@ -19,6 +19,8 @@ namespace EFaturaTakip.Entities.Mapping
             builder.Property(t => t.Phone).IsRequired().HasMaxLength(17);
             builder.Property(t => t.Password).IsRequired().HasMaxLength(10);
             builder.Property(t => t.Email).HasMaxLength(50);
+            builder.HasMany(t => t.Companies).WithOne(t => t.Musavir).IsRequired(false);
+
             builder.ToTable("User");
         }
     }

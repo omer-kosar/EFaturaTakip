@@ -13,6 +13,6 @@ namespace EFaturaTakip.Business.Abstract
         void Update(Stock entity);
         void Delete(Stock entity);
         Stock GetById(Guid id);
-        List<Stock> GetAll();
+        List<Stock> GetAll(Guid companyId);
     }
 }

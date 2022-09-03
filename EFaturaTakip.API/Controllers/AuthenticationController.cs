@@ -32,7 +32,7 @@ namespace EFaturaTakip.API.Controllers
             var user = _userManager.GetUser(user => user.Phone.Equals(loginModel.PhoneNumber) && user.Password.Equals(loginModel.Password));
             if (user == null) return BadRequest("Kullanıcı adı veya şifre hatalı");
             var userInfo = _mapper.Map<UserInfoDto>(user);
-            string token = CreateToken(loginModel, userInfo.Roles);
+            string token = CreateToken(loginModel, userInfo);
             userInfo.Token = token;
             userInfo.Expirytime = DateTime.Now.AddDays(1);//todo read expiration time form app settings
             user.LastLoginDate = DateTime.Now;
@@ -40,20 +40,20 @@ namespace EFaturaTakip.API.Controllers
             return Ok(userInfo);
         }
 
-        private string CreateToken(LoginDto loginModel, List<string> roles)
+        private string CreateToken(LoginDto loginModel, UserInfoDto userInfo)
         {
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.MobilePhone, loginModel.PhoneNumber),
-                new Claim("ServiceUserName","Uyumsoft"), //todo: take service username password from current user
-                new Claim("ServiceUserPassword","Uyumsoft")
+                new Claim("CompanyId",userInfo.CompanyId.ToString()),
+                new Claim("UserType",userInfo.Type.ToString())
             };
 
-            AddRoleToClaims(claims, roles);
+            AddRoleToClaims(claims, userInfo.Roles);
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Token").Value));
-
+            
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(

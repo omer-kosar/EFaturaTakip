@@ -12,6 +12,8 @@ namespace EFaturaTakip.Common.Repository.Abstract
         IEnumerable<T> FindAll();
         T Get(Expression<Func<T, bool>> expression);
         IEnumerable<T> FindByCondition(Expression<Func<T, bool>> expression);
+        IQueryable<T> FindByConditionAsQueryable(Expression<Func<T, bool>> expression);
+
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);

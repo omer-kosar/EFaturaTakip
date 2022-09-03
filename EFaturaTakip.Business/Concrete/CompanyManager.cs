@@ -6,6 +6,7 @@ using EFaturaTakip.Exceptions.Company;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,14 +57,25 @@ namespace EFaturaTakip.Business.Concrete
         }
         public List<Company> SearchCompany(string name, int take = 20)
         {
-            if (string.IsNullOrWhiteSpace(name)) return _companyDao.FindAll().Take(take).ToList();
-            return _companyDao.FindByCondition(i => i.Title.Contains(name) || i.FirstName.Contains(name) || i.LastName.Contains(name)).Take(take).ToList();
+            if (string.IsNullOrWhiteSpace(name))
+                return _companyDao.FindByCondition(i => i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram).Take(take).ToList();
+            return _companyDao.FindByCondition(i =>
+            i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram &&
+            (i.Title.Contains(name) ||
+            i.FirstName.Contains(name) ||
+            i.LastName.Contains(name)))
+                .Take(take).ToList();
         }
         private bool IsExistCompany(string tcknVkn, EnumCompanyType companyType, Guid companyId)
         {
             if (companyType == EnumCompanyType.Corporate)
                 return _companyDao.FindByCondition(i => i.VergiNo.Equals(tcknVkn) && i.Id != companyId).Any();
             return _companyDao.FindByCondition(i => i.TcKimlikNo.Equals(tcknVkn) && i.Id != companyId).Any();
+        }
+
+        public List<Company> GetAllWithFilter(Expression<Func<Company, bool>> expression)
+        {
+            return _companyDao.FindByCondition(expression).ToList();
         }
     }
 }

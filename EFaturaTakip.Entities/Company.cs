@@ -12,6 +12,8 @@ namespace EFaturaTakip.Entities
     public class Company
     {
         public Guid Id { get; set; }
+        public Guid? CompanyId { get; set; }
+        public Guid? MusavirId { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -38,5 +40,10 @@ namespace EFaturaTakip.Entities
         public string CentralRegistrationNumber { get; set; }
 
         public virtual ICollection<User> Users { get; set; } = new List<User>();
+        public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+
+        public virtual Company CompanyParent { get; set; }
+        public virtual User Musavir { get; set; }
+        public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
     }
 }

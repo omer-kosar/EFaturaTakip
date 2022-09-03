@@ -85,7 +85,6 @@ namespace EFaturaTakip.API
                 config.BaseAddress = new Uri(builder.Configuration.GetSection("UyumSoft:BaseUrl").Value);
             });
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            builder.Services.AddScoped<UyumSoftClient>();
             builder.Services.AddTransient<IUserManager, UserManager>();
             builder.Services.AddTransient<IUserDao, UserDao>();
             builder.Services.AddTransient<IRoleManager, RoleManager>();
@@ -95,6 +94,9 @@ namespace EFaturaTakip.API
             builder.Services.AddTransient<ICompanyManager, CompanyManager>();
             builder.Services.AddTransient<ICompanyDao, CompanyDao>();
             builder.Services.AddTransient<IUserRoleDao, UserRoleDao>();
+            builder.Services.AddScoped<UyumSoftClient>();
+
+            builder.Services.AddHttpContextAccessor();
 
             var emailConfig = builder.Configuration
              .GetSection("EmailConfiguration")

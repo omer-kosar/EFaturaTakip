@@ -30,5 +30,9 @@ namespace EFaturaTakip.DataAccess.Concrete
         {
             return _efaturaTakipContext.UserRole.Where(i => i.UserId == userId).ToList();
         }
+        public IEnumerable<User> FindByConditionFinincialAdvisor(Expression<Func<User, bool>> expression)
+        {
+            return _efaturaTakipContext.User.Where(expression).Include(t => t.Companies);
+        }
     }
 }

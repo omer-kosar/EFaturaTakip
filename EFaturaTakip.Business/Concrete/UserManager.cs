@@ -1,6 +1,8 @@
 ﻿using EFaturaTakip.Business.Abstract;
+using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.Entities;
+using EFaturaTakip.Exceptions.Company;
 using EFaturaTakip.Exceptions.User;
 using System.Linq.Expressions;
 
@@ -10,10 +12,12 @@ namespace EFaturaTakip.Business.Concrete
     {
         private readonly IUserDao _userDao;
         private readonly IUserRoleDao _userRoleDao;
-        public UserManager(IUserDao userDao, IUserRoleDao userRoleDao)
+        private readonly ICompanyDao _companyDao;
+        public UserManager(IUserDao userDao, IUserRoleDao userRoleDao, ICompanyDao companyDao)
         {
             _userDao = userDao;
             _userRoleDao = userRoleDao;
+            _companyDao = companyDao;
         }
 
         public void Create(User user)
@@ -52,10 +56,30 @@ namespace EFaturaTakip.Business.Concrete
             entity.Roles = addedRoles;
             _userDao.Update(entity);
         }
-
+        public List<User> SearchFinancialAdvisor(string name, int take = 20)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return _userDao.FindByConditionFinincialAdvisor(i => i.Type == (int)EnumUserType.Accountant).Take(take).ToList();
+            return _userDao.FindByConditionFinincialAdvisor(i => i.Type == (int)EnumUserType.Accountant && (i.FirstName.Contains(name) || i.LastName.Contains(name))).Take(take).ToList();
+        }
         public List<User> GetAll()
         {
             return _userDao.GetAllUserWithRoles();
+        }
+        public void ChangeAdvisor(Guid advisorId, Guid companyId)
+        {
+            var advisor = _userDao.Get(i => i.Id == advisorId);
+            if (advisor is null)
+            {
+                throw new UserExistException("Mali müşavir bulunamadı.");
+            }
+            var company = _companyDao.Get(i => i.Id == companyId);
+            if (company is null)
+                throw new CompanyExistException("Firma bulunamadı.");
+            if (company.MusavirId == advisorId)
+                company.MusavirId = null;
+            else
+                company.MusavirId = advisorId;
+            _companyDao.Update(company);
         }
     }
 }

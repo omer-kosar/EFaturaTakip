@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220827201510_CompanyNullableColumns")]
+    partial class CompanyNullableColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,9 +87,6 @@ namespace EFaturaTakip.Entities.Migrations
                         .HasMaxLength(17)
                         .HasColumnType("nvarchar(17)");
 
-                    b.Property<Guid?>("MusavirId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Province")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -123,8 +122,6 @@ namespace EFaturaTakip.Entities.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("MusavirId");
-
                     b.ToTable("Company", (string)null);
                 });
 
@@ -146,17 +143,17 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("03a5441a-25b9-4714-9b9d-90b177567987"),
+                            Id = new Guid("f51fca63-b0bb-4ef8-8c39-536af8b438d0"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("3a3d3e1f-842c-4f4b-ab76-16ece6b6e3aa"),
+                            Id = new Guid("4631c0a5-31e1-45c6-a1ce-e2f7087937e3"),
                             Name = "TaxPayer"
                         },
                         new
                         {
-                            Id = new Guid("52d44f49-5f11-4d74-a460-a467234ad5e1"),
+                            Id = new Guid("7556aa15-e9de-44d4-a50b-4a87dad1d83e"),
                             Name = "Accountant"
                         });
                 });
@@ -266,13 +263,7 @@ namespace EFaturaTakip.Entities.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("EFaturaTakip.Entities.User", "Musavir")
-                        .WithMany("Companies")
-                        .HasForeignKey("MusavirId");
-
                     b.Navigation("CompanyParent");
-
-                    b.Navigation("Musavir");
                 });
 
             modelBuilder.Entity("EFaturaTakip.Entities.Stock", b =>
@@ -330,8 +321,6 @@ namespace EFaturaTakip.Entities.Migrations
 
             modelBuilder.Entity("EFaturaTakip.Entities.User", b =>
                 {
-                    b.Navigation("Companies");
-
                     b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618

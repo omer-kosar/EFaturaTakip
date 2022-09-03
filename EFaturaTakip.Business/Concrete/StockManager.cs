@@ -33,9 +33,9 @@ namespace EFaturaTakip.Business.Concrete
             _stockDao.Delete(entity);
         }
 
-        public List<Stock> GetAll()
+        public List<Stock> GetAll(Guid companyId)
         {
-            return _stockDao.FindAll().ToList();
+            return _stockDao.FindByCondition(i => i.CompanyId == companyId).ToList();
         }
 
         public Stock GetById(Guid id)
