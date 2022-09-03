@@ -11,17 +11,19 @@ namespace EFaturaTakip.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ServiceFilter(typeof(ValidationFilter))]
-    [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.TaxPayer })]
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
-        public UserController(IUserManager userManager, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserController(IUserManager userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpGet("GetList")]
         public IActionResult GetList()
         {
@@ -30,6 +32,7 @@ namespace EFaturaTakip.API.Controllers
             return Ok(userDtoList);
         }
 
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
@@ -39,6 +42,7 @@ namespace EFaturaTakip.API.Controllers
             return Ok(userItemDto);
         }
 
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpPost]
         public IActionResult Post([FromBody] UserAddDto model)
         {
@@ -47,6 +51,7 @@ namespace EFaturaTakip.API.Controllers
             return Ok("Kullanıcı Kaydedildi.");
         }
 
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, [FromBody] UserUpdateDto userModel)
         {
@@ -56,6 +61,7 @@ namespace EFaturaTakip.API.Controllers
             return Ok("Kullanıcı güncellendi.");
         }
 
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpDelete("delete/{userId}")]
         public IActionResult Delete(Guid userId)
         {
@@ -65,18 +71,41 @@ namespace EFaturaTakip.API.Controllers
             return Ok("Kullanıcı silindi.");
         }
 
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpGet("searchfinancialadvisor")]
-        public IActionResult SearchCompany(string? name = "", int take = 20)
+        public IActionResult SearchFinancialAdvisor(string? name = "", int take = 20)
         {
             var result = _userManager.SearchFinancialAdvisor(name, take);
             var financialAdvisorListDto = _mapper.Map<List<FinancialAdvisorSearchDto>>(result);
             return Ok(financialAdvisorListDto);
         }
+
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
         [HttpGet("ChangeFinancialAdvisor")]
         public IActionResult ChangeFinancialAdvisor(Guid advisorId, Guid companyId)
         {
             _userManager.ChangeAdvisor(advisorId, companyId);
             return Ok();
+        }
+
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.Accountant, EnumUserType.TaxPayer })]
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)
+        {
+            var authenticatedUserId = GetAuthenticatedUserId();
+            if (authenticatedUserId != changePasswordDto.Id)
+                return BadRequest("Şifre değiştirme işlemi gerçekleştirilemiyor.");
+
+            var user = _userManager.GetUser(i => i.Id == changePasswordDto.Id);
+            user.Password = changePasswordDto.NewPassword;
+            _userManager.Update(user);
+            return Ok("Şifre değiştirildi. Yeni şifrenizle tekra giriş yapınız.");
+        }
+
+        private Guid GetAuthenticatedUserId()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type.Equals("UserId")).Value;
+            return Guid.Parse(userId);
         }
     }
 }
