@@ -90,13 +90,13 @@ namespace EFaturaTakip.API.Controllers
             return BadRequest(result.Data.Message);
         }
 
-        [AuthorizeFilter(new EnumUserType[] { EnumUserType.TaxPayer, EnumUserType.Accountant, EnumUserType.Admin })]
-        [HttpGet("ShowInvoice/{invoiceId}")]
+        [HttpGet("ShowInvoice/{invoiceId}/{companyId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> Get(Guid invoiceId)
+        public async Task<IActionResult> Get(Guid invoiceId, Guid companyId)
         {
             //company id gönder
-            var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, _userInfo);
+            var userInfo = new UserInfo { Username = GetServiceUserName(companyId), Password = GetServiceUserPassword(companyId) };
+            var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, userInfo);
             if (!result.Data.IsSucceded)
                 return BadRequest(result.Data.Message);
 
