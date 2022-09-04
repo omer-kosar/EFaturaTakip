@@ -66,6 +66,20 @@ namespace EFaturaTakip.Business.Concrete
             i.LastName.Contains(name)))
                 .Take(take).ToList();
         }
+        public List<Company> SearchFinancialAdvisorCompany(Guid advisorId, string name, int take = 20)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return _companyDao.FindByCondition(i => i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram &&
+                                                        i.MusavirId == advisorId).Take(take).ToList();
+            return _companyDao.FindByCondition(i =>
+            i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram &&
+            i.MusavirId == advisorId &&
+            (i.Title.Contains(name) ||
+            i.FirstName.Contains(name) ||
+            i.LastName.Contains(name)))
+                .Take(take).ToList();
+        }
+
         private bool IsExistCompany(string tcknVkn, EnumCompanyType companyType, Guid companyId)
         {
             if (companyType == EnumCompanyType.Corporate)

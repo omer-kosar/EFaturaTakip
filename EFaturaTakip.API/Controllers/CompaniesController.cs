@@ -104,11 +104,13 @@ namespace EFaturaTakip.API.Controllers
             return Ok("Unvan bulunamadı.");
         }
 
-        [AuthorizeFilter(new EnumUserType[] { EnumUserType.TaxPayer, EnumUserType.Admin, EnumUserType.Accountant })]
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.Accountant })]
         [HttpGet("SearchCompany")]
         public IActionResult SearchCompany(string? name = "", int take = 20)
         {
-            var result = _companyManager.SearchCompany(name, take);
+            var userIsAdmin = CurrentUserIsAdmin();
+            var authenticatedUserId = GetAuthenticatedUserId();
+            var result = userIsAdmin ? _companyManager.SearchCompany(name, take) : _companyManager.SearchFinancialAdvisorCompany(authenticatedUserId, name, take);
             var companyListDto = _mapper.Map<List<CompanySearchDto>>(result);
             return Ok(companyListDto);
         }
@@ -120,6 +122,11 @@ namespace EFaturaTakip.API.Controllers
         {
             int userType = int.Parse(_httpContextAccessor.HttpContext.User.Claims.First(i => i.Type.Equals("UserType")).Value);
             return userType == (int)EnumUserType.Admin;
+        }
+        private Guid GetAuthenticatedUserId()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type.Equals("UserId")).Value;
+            return Guid.Parse(userId);
         }
     }
 }
