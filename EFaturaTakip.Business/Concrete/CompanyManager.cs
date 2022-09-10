@@ -3,6 +3,7 @@ using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.Entities;
 using EFaturaTakip.Exceptions.Company;
+using EFaturaTakip.Exceptions.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace EFaturaTakip.Business.Concrete
     public class CompanyManager : ICompanyManager
     {
         private readonly ICompanyDao _companyDao;
+        private readonly IUserDao _userDao;
 
-        public CompanyManager(ICompanyDao companyDao)
+        public CompanyManager(ICompanyDao companyDao, IUserDao userDao)
         {
             _companyDao = companyDao;
+            _userDao = userDao;
         }
 
         public void Create(Company company)
@@ -80,6 +83,10 @@ namespace EFaturaTakip.Business.Concrete
                 .Take(take).ToList();
         }
 
+        public List<Company> GetAdvisorCompanies(Guid advisorId)
+        {
+            return _companyDao.FindByCondition(i => i.MusavirId == advisorId && i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram).ToList();
+        }
         private bool IsExistCompany(string tcknVkn, EnumCompanyType companyType, Guid companyId)
         {
             if (companyType == EnumCompanyType.Corporate)
@@ -87,6 +94,28 @@ namespace EFaturaTakip.Business.Concrete
             return _companyDao.FindByCondition(i => i.TcKimlikNo.Equals(tcknVkn) && i.Id != companyId).Any();
         }
 
+        public void ChangeFinancialAdvisor(Guid advisorId, List<Guid> companies)
+        {
+            var advisor = _userDao.Get(i => i.Id == advisorId);
+            if (advisor is null)
+            {
+                throw new UserExistException("Mali müşavir bulunamadı.");
+            }
+            var companyList = _companyDao.FindByCondition(i => i.MusavirId == advisorId && i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram);
+            var addedCompanyIdList = companies.Where(i => companyList.All(c => c.Id != i));
+            var removedCompanies = companyList.Where(i => !companies.Contains(i.Id)).ToList();
+            foreach (var item in removedCompanies)
+            {
+                item.MusavirId = null;
+            }
+            var addedCompanies = _companyDao.FindByCondition(i => addedCompanyIdList.Contains(i.Id)).ToList();
+            foreach (var item in addedCompanies)
+            {
+                item.MusavirId = advisorId;
+            }
+            _companyDao.Update(addedCompanies);
+            _companyDao.Update(removedCompanies);
+        }
         public List<Company> GetAllWithFilter(Expression<Func<Company, bool>> expression)
         {
             return _companyDao.FindByCondition(expression).ToList();

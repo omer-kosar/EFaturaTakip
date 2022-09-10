@@ -80,14 +80,6 @@ namespace EFaturaTakip.API.Controllers
             return Ok(financialAdvisorListDto);
         }
 
-        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
-        [HttpGet("ChangeFinancialAdvisor")]
-        public IActionResult ChangeFinancialAdvisor(Guid advisorId, Guid companyId)
-        {
-            _userManager.ChangeAdvisor(advisorId, companyId);
-            return Ok();
-        }
-
         [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.Accountant, EnumUserType.TaxPayer })]
         [HttpPost("ChangePassword")]
         public IActionResult ChangePassword(ChangePasswordDto changePasswordDto)

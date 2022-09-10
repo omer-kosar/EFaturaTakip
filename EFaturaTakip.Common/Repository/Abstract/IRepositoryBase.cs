@@ -16,6 +16,7 @@ namespace EFaturaTakip.Common.Repository.Abstract
 
         void Create(T entity);
         void Update(T entity);
+        void Update(List<T> entities);
         void Delete(T entity);
         int Save();
     }

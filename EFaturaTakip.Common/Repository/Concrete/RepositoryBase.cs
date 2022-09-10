@@ -45,6 +45,11 @@ namespace EFaturaTakip.Common.Repository.Concrete
             EFaturaTakipContext.Update<T>(entity);
             Save();
         }
+        public void Update(List<T> entities)
+        {
+            EFaturaTakipContext.UpdateRange(entities);
+            Save();
+        }
 
         public T Get(Expression<Func<T, bool>> expression)
         {

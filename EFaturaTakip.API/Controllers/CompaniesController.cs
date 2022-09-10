@@ -114,6 +114,33 @@ namespace EFaturaTakip.API.Controllers
             var companyListDto = _mapper.Map<List<CompanySearchDto>>(result);
             return Ok(companyListDto);
         }
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
+
+        [HttpGet("GetAdvisorCompanies/{advisorId}")]
+        public IActionResult GetAdvisorCompanies(Guid advisorId)
+        {
+            var companyList = _companyManager.GetAdvisorCompanies(advisorId);
+            var companyDtoList = _mapper.Map<List<Company>, List<CompanySearchDto>>(companyList);
+            return Ok(companyDtoList);
+        }
+
+        [HttpGet("GetCompanies")]
+        public IActionResult GetCompanies()
+        {
+            var companyList = _companyManager.GetAllWithFilter(company => company.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram);
+            var companyDtoList = _mapper.Map<List<Company>, List<CompanySearchDto>>(companyList);
+            return Ok(companyDtoList);
+        }
+
+
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
+        [HttpPost("ChangeCompaniesAdvisor/{advisorId}")]
+        public IActionResult ChangeCompaniesAdvisor(Guid advisorId, List<Guid> companies)
+        {
+            _companyManager.ChangeFinancialAdvisor(advisorId, companies);
+            return Ok("Değişiklikler kaydedildi.");
+        }
+
         private Guid GetCurrentUserCompanyId()
         {
             return Guid.Parse(_httpContextAccessor.HttpContext.User.Claims.First(c => c.Type.Equals("CompanyId")).Value);

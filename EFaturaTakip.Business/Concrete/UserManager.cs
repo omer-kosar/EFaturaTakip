@@ -65,21 +65,5 @@ namespace EFaturaTakip.Business.Concrete
         {
             return _userDao.GetAllUserWithRoles();
         }
-        public void ChangeAdvisor(Guid advisorId, Guid companyId)
-        {
-            var advisor = _userDao.Get(i => i.Id == advisorId);
-            if (advisor is null)
-            {
-                throw new UserExistException("Mali müşavir bulunamadı.");
-            }
-            var company = _companyDao.Get(i => i.Id == companyId);
-            if (company is null)
-                throw new CompanyExistException("Firma bulunamadı.");
-            if (company.MusavirId == advisorId)
-                company.MusavirId = null;
-            else
-                company.MusavirId = advisorId;
-            _companyDao.Update(company);
-        }
     }
 }
