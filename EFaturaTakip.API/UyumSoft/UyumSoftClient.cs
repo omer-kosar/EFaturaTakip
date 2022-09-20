@@ -11,16 +11,10 @@ namespace EFaturaTakip.API.UyumSoft
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserInfo _userInfo;
         private readonly ICompanyDao _companyDao;
         public UyumSoftClient(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
-            //_userInfo = new UserInfo
-            //{
-            //    Username = GetServiceUserName(),
-            //    Password = GetServiceUserPassword()
-            //};
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -54,8 +48,21 @@ namespace EFaturaTakip.API.UyumSoft
             };
             return await ApiCall<GetInboxInvoiceListResponse>(requestModel);
         }
+        public async Task<GetInboxInvoiceListResponse> GetOutboxInvoiceList(Query query, UserInfo userInfo)
+        {
+            var requestModel = new RequestParameters
+            {
+                Action = "GetOutboxInvoiceList",
+                parameters = new ParametersWithQuery
+                {
+                    query = query,
+                    userInfo = userInfo
+                }
+            };
+            return await ApiCall<GetInboxInvoiceListResponse>(requestModel);
+        }
 
-        public async Task<InboxInviocePdfResponse> GetInboxInvoicePdf(Guid invoiceId, UserInfo userInfo = null)
+        public async Task<InboxInviocePdfResponse> GetInboxInvoicePdf(Guid invoiceId, UserInfo userInfo)
         {
             var requestModel = new RequestParameters
             {
@@ -63,7 +70,20 @@ namespace EFaturaTakip.API.UyumSoft
                 parameters = new GetInboxInvoicePdfParameters
                 {
                     InvoiceId = invoiceId.ToString(),
-                    userInfo = userInfo ?? _userInfo
+                    userInfo = userInfo
+                }
+            };
+            return await ApiCall<InboxInviocePdfResponse>(requestModel);
+        }
+        public async Task<InboxInviocePdfResponse> GetOutboxInvoicePdf(Guid invoiceId, UserInfo userInfo)
+        {
+            var requestModel = new RequestParameters
+            {
+                Action = "GetOutboxInvoicePdf",
+                parameters = new GetInboxInvoicePdfParameters
+                {
+                    InvoiceId = invoiceId.ToString(),
+                    userInfo = userInfo
                 }
             };
             return await ApiCall<InboxInviocePdfResponse>(requestModel);
@@ -88,7 +108,7 @@ namespace EFaturaTakip.API.UyumSoft
                 parameters = new SendDocumentResponseParameters
                 {
                     Responses = response,
-                    userInfo = userInfo ?? _userInfo
+                    userInfo = userInfo
                 }
             };
             return await ApiCall<SendDocumentResponse>(requestModel);
@@ -103,7 +123,7 @@ namespace EFaturaTakip.API.UyumSoft
             }
             return documentResponseInfoList;
         }
-        public async Task<UserAliassesResponse> GetUserAliasses(string vknTckn)
+        public async Task<UserAliassesResponse> GetUserAliasses(string vknTckn, UserInfo userInfo)
         {
             var requestModel = new RequestParameters
             {
@@ -111,7 +131,7 @@ namespace EFaturaTakip.API.UyumSoft
                 parameters = new IsEInvoiceUserParameters
                 {
                     VknTckn = vknTckn,
-                    userInfo = _userInfo
+                    userInfo = userInfo
                 }
             };
             return await ApiCall<UserAliassesResponse>(requestModel);

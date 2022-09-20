@@ -83,6 +83,6 @@ namespace EFaturaTakip.Common.Enums
         [Description("")]
         InvoiceLinkedToCancel,
         [Description("")]
-        CompletedSuccessfully,
+        CompletedSuccessfully
     }
 }

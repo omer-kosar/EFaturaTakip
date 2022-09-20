@@ -4,6 +4,7 @@ using EFaturaTakip.API.UyumSoft;
 using EFaturaTakip.Business.Abstract;
 using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DTO.Company;
+using EFaturaTakip.DTO.UyumSoft;
 using EFaturaTakip.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -99,7 +100,15 @@ namespace EFaturaTakip.API.Controllers
         [HttpGet("getCompanyTitle")]
         public async Task<IActionResult> GetTitle(string vergiNo)
         {
-            var result = await _uyumSoftClient.GetUserAliasses(vergiNo);
+            var companyId = GetCurrentUserCompanyId();
+
+            UserInfo userInfo = new UserInfo
+            {
+                Username = GetServiceUserName(companyId),
+                Password = GetServiceUserPassword(companyId)
+            };
+
+            var result = await _uyumSoftClient.GetUserAliasses(vergiNo, userInfo);
             if (result.Data.IsSucceded && result.Data.Value != null) return Ok(result.Data.Value.definition.title);
             return Ok("Unvan bulunamadı.");
         }
@@ -154,6 +163,17 @@ namespace EFaturaTakip.API.Controllers
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type.Equals("UserId")).Value;
             return Guid.Parse(userId);
+        }
+        private string GetServiceUserName(Guid companyId)
+        {
+            var company = _companyManager.GetById(companyId);
+            return company?.ServiceUserName;
+
+        }
+        private string GetServiceUserPassword(Guid companyId)
+        {
+            var company = _companyManager.GetById(companyId);
+            return company?.ServicePassword;
         }
     }
 }
