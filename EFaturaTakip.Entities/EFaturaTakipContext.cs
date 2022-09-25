@@ -19,6 +19,8 @@ namespace EFaturaTakip.Entities
         public DbSet<Role> Role { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
         public DbSet<Company> Company { get; set; }
+        public DbSet<Invoice> Invoice { get; set; }
+        public DbSet<InvoiceItem> InvoiceItem { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new RoleMap());
@@ -26,6 +28,8 @@ namespace EFaturaTakip.Entities
             modelBuilder.ApplyConfiguration(new UserRoleMap());
             modelBuilder.ApplyConfiguration(new StockMap());
             modelBuilder.ApplyConfiguration(new CompanyMap());
+            modelBuilder.ApplyConfiguration(new InvoiceMap());
+            modelBuilder.ApplyConfiguration(new InvoiceItemMap());
         }
     }
 }

@@ -45,5 +45,7 @@ namespace EFaturaTakip.Entities
         public virtual Company CompanyParent { get; set; }
         public virtual User Musavir { get; set; }
         public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
+        public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+        public virtual ICollection<Invoice> CustomerInvoices { get; set; } = new List<Invoice>();
     }
 }

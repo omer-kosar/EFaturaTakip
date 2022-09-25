@@ -67,7 +67,14 @@ namespace EFaturaTakip.API.Controllers
             _stockManager.Delete(stock);
             return Ok("Stok silindi.");
         }
-
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.TaxPayer })]
+        [HttpGet("SearchStock")]
+        public IActionResult SearchStock(string? name = "", int take = 20)
+        {
+            var result = _stockManager.SearchStock(name, take);
+            var stockListDto = _mapper.Map<List<StockSearchDto>>(result);
+            return Ok(stockListDto);
+        }
         private Guid GetCurrentUserCompanyId()
         {
             if (!HttpContext.User.Claims.Any(c => c.Type == "CompanyId")) return Guid.Empty;

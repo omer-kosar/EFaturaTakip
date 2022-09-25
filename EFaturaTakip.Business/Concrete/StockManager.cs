@@ -50,7 +50,13 @@ namespace EFaturaTakip.Business.Concrete
                 throw new StockExistException($"{entity.Name} kayıtlıdır. Aynı isimle birden fazla stok kaydedemezsiniz.");
             _stockDao.Update(entity);
         }
-
+        public List<Stock> SearchStock(string name, int take = 20)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return _stockDao.FindAll().Take(take).ToList();
+            return _stockDao.FindByCondition(i => i.Name.Contains(name))
+                            .Take(take).ToList();
+        }
         private bool IsStockExist(string name, Guid id)
         {
             return _stockDao.FindByCondition(i => i.Id != id && i.Name.ToLower().Equals(name.ToLower())).Any();

@@ -42,7 +42,8 @@ namespace EFaturaTakip.API.Controllers
         [HttpGet("GetCustomerList")]
         public IActionResult GetCustomerList()
         {
-            var companyList = _companyManager.GetAllWithFilter(i => i.CompanySaveType == (int)EnumCompanySaveType.Customer);
+            var companyId = GetCurrentUserCompanyId();
+            var companyList = _companyManager.GetAllWithFilter(i => i.CompanyId == companyId && i.CompanySaveType == (int)EnumCompanySaveType.Customer);
             var companyDtoList = _mapper.Map<List<Company>, List<CompanyListDto>>(companyList);
             return Ok(companyDtoList);
         }
@@ -123,6 +124,16 @@ namespace EFaturaTakip.API.Controllers
             var companyListDto = _mapper.Map<List<CompanySearchDto>>(result);
             return Ok(companyListDto);
         }
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.TaxPayer })]
+        [HttpGet("SearchCustomer")]
+        public IActionResult SearchCustomer(string? name = "", int take = 20)
+        {
+            var companyId = GetCurrentUserCompanyId();
+            var result = _companyManager.SearchCustomer(companyId, name, take);
+            var customerListDto = _mapper.Map<List<CompanySearchDto>>(result);
+            return Ok(customerListDto);
+        }
+
         [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin })]
 
         [HttpGet("GetAdvisorCompanies/{advisorId}")]

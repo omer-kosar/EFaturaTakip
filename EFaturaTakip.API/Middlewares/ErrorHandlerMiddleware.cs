@@ -36,7 +36,8 @@ namespace EFaturaTakip.API.Middlewares
                 return;
             }
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await httpContext.Response.WriteAsync("Beklenmeyen bir hata oluştur.");
+            await httpContext.Response.WriteAsync(exception.Message);
+            //await httpContext.Response.WriteAsync("Beklenmeyen bir hata oluştur.");
         }
     }
 }

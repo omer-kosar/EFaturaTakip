@@ -20,7 +20,7 @@ namespace EFaturaTakip.Entities
         public int Unit { get; set; }
 
         public int ValueAddedTax { get; set; }
-
         public virtual Company Company { get; set; }
+        public virtual ICollection<InvoiceItem> InvoiceItems { get; set; } = new List<InvoiceItem>();
     }
 }

@@ -14,6 +14,8 @@ namespace EFaturaTakip.Entities.Mapping
         {
             builder.HasKey(x => x.Id);
             builder.Property(t => t.Name).HasMaxLength(255).IsRequired(true);
+
+            builder.HasMany(t => t.InvoiceItems).WithOne(t => t.Stock).IsRequired(true);
         }
     }
 }

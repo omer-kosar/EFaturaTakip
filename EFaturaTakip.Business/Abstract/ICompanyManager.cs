@@ -18,6 +18,7 @@ namespace EFaturaTakip.Business.Abstract
         List<Company> GetAllWithFilter(Expression<Func<Company, bool>> expression);
         List<Company> SearchCompany(string name, int take = 20);
         List<Company> SearchFinancialAdvisorCompany(Guid advisorId, string name, int take = 20);
+        List<Company> SearchCustomer(Guid companyId, string name, int take);
         List<Company> GetAdvisorCompanies(Guid advisorId);
         void ChangeFinancialAdvisor(Guid advisorId, List<Guid> companies);
     }

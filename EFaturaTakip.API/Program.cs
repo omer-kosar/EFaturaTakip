@@ -57,10 +57,13 @@ namespace EFaturaTakip.API
                      ValidateLifetime = true,
                  };
              });
-            builder.Services.AddDbContext<EFaturaTakipContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbEFaturaTakip")));
+            builder.Services.AddDbContext<EFaturaTakipContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbEFaturaTakip"), opt =>
+            {
+                opt.EnableRetryOnFailure();
+            }));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            var uiOriginUrl = builder.Configuration.GetSection("AppSettings:UIOriginUrl").Value;
+            var uiOriginUrl = builder.Configuration.GetSection("AppSettings:UIOriginUrl").Value.Split(',');
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("eFaturaTakipOrigin", builder =>
@@ -94,6 +97,8 @@ namespace EFaturaTakip.API
             builder.Services.AddTransient<ICompanyManager, CompanyManager>();
             builder.Services.AddTransient<ICompanyDao, CompanyDao>();
             builder.Services.AddTransient<IUserRoleDao, UserRoleDao>();
+            builder.Services.AddTransient<IInvoiceManager, InvoiceManager>();
+            builder.Services.AddTransient<IInvoiceDao, InvoiceDao>();
             builder.Services.AddScoped<UyumSoftClient>();
 
             builder.Services.AddHttpContextAccessor();
@@ -113,7 +118,7 @@ namespace EFaturaTakip.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseCors("eFaturaTakipOrigin");
 

@@ -17,7 +17,7 @@ namespace EFaturaTakip.API.Controllers
     [ApiController]
     [Authorize]
     [ServiceFilter(typeof(ValidationFilter))]
-    public class InvoicesController : ControllerBase
+    public class ElectronicInvoicesController : ControllerBase
     {
         private readonly UyumSoftClient _uyumSoftClient;
 
@@ -26,7 +26,7 @@ namespace EFaturaTakip.API.Controllers
         private readonly ICompanyManager _companyManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public InvoicesController(UyumSoftClient uyumSoftClient, IEMailSender emailSender, ICompanyManager companyManager, IHttpContextAccessor httpContextAccessor)
+        public ElectronicInvoicesController(UyumSoftClient uyumSoftClient, IEMailSender emailSender, ICompanyManager companyManager, IHttpContextAccessor httpContextAccessor)
         {
             _uyumSoftClient = uyumSoftClient;
             _emailSender = emailSender;
@@ -78,6 +78,23 @@ namespace EFaturaTakip.API.Controllers
                 return Ok(result.Data.Value);
             return BadRequest(result.Data.Message);
         }
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.Accountant })]
+        [HttpGet("GetOutboxInvoiceListByCompanyId/{companyId}")]
+        public async Task<IActionResult> GetOutboxInvoiceListByCompanyId(Guid companyId, DateTime? baslangicTarihi, DateTime? bitisTarihi, int pageIndex = 0, int pageSize = 10)
+        {
+            var serviceUserName = GetServiceUserName(companyId);
+            var servicePassword = GetServiceUserPassword(companyId);
+            if (string.IsNullOrWhiteSpace(serviceUserName) || string.IsNullOrWhiteSpace(servicePassword))
+            {
+                throw new ServiceUserNotFoundException("Servis login işlemi gerçekleştirilemedi.");
+            }
+            var userInfo = new UserInfo { Username = serviceUserName, Password = servicePassword };
+            var result = await GetOutboxInvoiceList(userInfo, baslangicTarihi, bitisTarihi, pageIndex, pageSize);
+            if (result.Data.IsSucceded)
+                return Ok(result.Data.Value);
+            return BadRequest(result.Data.Message);
+        }
+
 
         [AuthorizeFilter(new EnumUserType[] { EnumUserType.TaxPayer, EnumUserType.Accountant })]
         [HttpPost("ApproveInboxInvoices")]

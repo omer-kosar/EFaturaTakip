@@ -28,6 +28,8 @@ namespace EFaturaTakip.Entities.Mapping
             builder.Property(t => t.CentralRegistrationNumber).HasMaxLength(50);
 
             builder.HasMany(t => t.Users).WithOne(t => t.Company).IsRequired(false);
+            builder.HasMany(t => t.Invoices).WithOne(t => t.Company).IsRequired(false);
+            builder.HasMany(t => t.CustomerInvoices).WithOne(t => t.Customer).IsRequired(false);
             builder.HasMany(t => t.Stocks).WithOne(t => t.Company).IsRequired();
             builder.HasOne(t => t.CompanyParent).WithMany(t => t.Companies).HasForeignKey(t => t.CompanyId)
                 .IsRequired(false).OnDelete(DeleteBehavior.Restrict);

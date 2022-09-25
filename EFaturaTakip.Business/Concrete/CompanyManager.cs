@@ -83,6 +83,15 @@ namespace EFaturaTakip.Business.Concrete
                 .Take(take).ToList();
         }
 
+        public List<Company> SearchCustomer(Guid companyId, string name, int take)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return _companyDao.FindByCondition(i => i.CompanyId == companyId && i.CompanySaveType == (int)EnumCompanySaveType.Customer).Take(20).ToList();
+            return _companyDao.FindByCondition(i => i.CompanyId == companyId &&
+                                                    i.CompanySaveType == (int)EnumCompanySaveType.Customer &&
+                                                    (i.Title.Contains(name) || i.FirstName.Contains(name) ||
+                                                    i.LastName.Contains(name))).Take(take).ToList();
+        }
         public List<Company> GetAdvisorCompanies(Guid advisorId)
         {
             return _companyDao.FindByCondition(i => i.MusavirId == advisorId && i.CompanySaveType == (int)EnumCompanySaveType.CompanyUsingProgram).ToList();

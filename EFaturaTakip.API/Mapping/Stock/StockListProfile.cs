@@ -17,6 +17,11 @@ namespace EFaturaTakip.API.Mapping.Stock
                 .ForMember(dest => dest.ValueAddedTax, opt => opt.MapFrom(src => src.ValueAddedTax))
                 .ForMember(dest => dest.UnitDescription, opt => opt.MapFrom(src => EnumUtilities.GetDescription(typeof(EnumUnit), src.Unit)))
                 .ReverseMap();
+            CreateMap<Entities.Stock, StockSearchDto>()
+             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+             .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.ValueAddedTax))
+             .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
         }
     }
 }
