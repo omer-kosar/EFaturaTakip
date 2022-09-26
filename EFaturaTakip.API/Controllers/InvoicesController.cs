@@ -18,14 +18,16 @@ namespace EFaturaTakip.API.Controllers
     public class InvoicesController : ControllerBase
     {
         private readonly IInvoiceManager _invoiceManager;
+        private readonly IInvoiceItemManager _invoiceItemManager;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public InvoicesController(IInvoiceManager invoiceManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public InvoicesController(IInvoiceManager invoiceManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IInvoiceItemManager invoiceItemManager)
         {
             _invoiceManager = invoiceManager;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _invoiceItemManager = invoiceItemManager;
         }
 
         // GET api/<InvoiceController>/5
@@ -36,6 +38,14 @@ namespace EFaturaTakip.API.Controllers
             var invoiceList = _invoiceManager.GetAllWithFilter(i => i.CompanyId == companyId);
             var invoiceDtoList = _mapper.Map<List<InvoiceListDto>>(invoiceList);
             return Ok(invoiceDtoList);
+        }
+
+        [HttpGet("GetInvoiceItems/{invoiceId}")]
+        public IActionResult GetInvoiceItems(Guid invoiceId)
+        {
+            var invoiceItemList = _invoiceItemManager.GetAllWithFilter(i => i.InvoiceId == invoiceId);
+            var invoiceItemDtoList = _mapper.Map<List<InvoiceItemListDto>>(invoiceItemList);
+            return Ok(invoiceItemDtoList);
         }
 
         // POST api/<InvoiceController>
@@ -53,13 +63,15 @@ namespace EFaturaTakip.API.Controllers
         public void Put(int id, [FromBody] string value)
         {
         }
-
-        // DELETE api/<InvoiceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.TaxPayer })]
+        [HttpDelete("delete/{invoiceId}")]
+        public IActionResult Delete(Guid invoiceId)
         {
+            var invoice = _invoiceManager.GetById(invoiceId);
+            if (invoice == null) return BadRequest("Fatura bulunamadı. Silme işlemi gerçekleştirilemiyor.");
+            _invoiceManager.Delete(invoice);
+            return Ok("Fatura silindi.");
         }
-
 
         private Guid GetCurrentUserCompanyId()
         {

@@ -26,9 +26,19 @@ namespace EFaturaTakip.API.Mapping.Invoice
                 .ReverseMap()
                 ;
             CreateMap<Entities.Invoice, InvoiceListDto>()
+                .ForMember(dest => dest.InvoiceId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
                 .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.InvoiceItems.Sum(i => i.TotalPriceWithTax)))
                 .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.Type == (int)EnumCompanyType.Corporate ? src.Customer.Title : $"{src.Customer.FirstName} {src.Customer.LastName}"))
+                ;
+            CreateMap<Entities.InvoiceItem, InvoiceItemListDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
+                .ForMember(dest => dest.PriceWithTax, opt => opt.MapFrom(src => src.PriceWithTax))
+                .ForMember(dest => dest.Tax, opt => opt.MapFrom(src => src.Tax))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPriceWithTax))
+                .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
                 ;
         }
     }

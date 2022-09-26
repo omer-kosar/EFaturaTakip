@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EFaturaTakip.DTO.Invoice
 {
-    public class InvoiceItemDto : BaseInvoiceItemDto
+    public class InvoiceItemListDto : BaseInvoiceItemDto
     {
         public Guid Id { get; set; }
-        public Guid? StockId { get; set; }
+        public string StockName { get; set; }
     }
 }
