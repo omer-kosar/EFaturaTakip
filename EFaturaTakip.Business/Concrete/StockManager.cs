@@ -26,11 +26,13 @@ namespace EFaturaTakip.Business.Concrete
             if (isStockUser)
                 throw new StockExistException($"{stock.Name} kayıtlıdır. Aynı isimle birden fazla stok kaydedemezsiniz.");
             _stockDao.Create(stock);
+            Save();
         }
 
         public void Delete(Stock entity)
         {
             _stockDao.Delete(entity);
+            Save();
         }
 
         public List<Stock> GetAll(Guid companyId)
@@ -49,6 +51,7 @@ namespace EFaturaTakip.Business.Concrete
             if (isStockUser)
                 throw new StockExistException($"{entity.Name} kayıtlıdır. Aynı isimle birden fazla stok kaydedemezsiniz.");
             _stockDao.Update(entity);
+            Save();
         }
         public List<Stock> SearchStock(string name, int take = 20)
         {
@@ -60,6 +63,10 @@ namespace EFaturaTakip.Business.Concrete
         private bool IsStockExist(string name, Guid id)
         {
             return _stockDao.FindByCondition(i => i.Id != id && i.Name.ToLower().Equals(name.ToLower())).Any();
+        }
+        private void Save()
+        {
+            _stockDao.Save();
         }
     }
 }

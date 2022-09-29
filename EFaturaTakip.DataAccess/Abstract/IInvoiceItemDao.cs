@@ -12,5 +12,6 @@ namespace EFaturaTakip.DataAccess.Abstract
     public interface IInvoiceItemDao : IRepositoryBase<InvoiceItem>
     {
         IEnumerable<InvoiceItem> FindInvoiceItemsByCondition(Expression<Func<InvoiceItem, bool>> expression);
+
     }
 }

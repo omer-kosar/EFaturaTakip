@@ -1,4 +1,5 @@
-﻿using EFaturaTakip.Entities;
+﻿using EFaturaTakip.DTO.Invoice;
+using EFaturaTakip.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace EFaturaTakip.Business.Abstract
     {
         void Create(Invoice invoice);
         void Update(Invoice invocie);
+        Invoice UpdateInvoiceWithItems(InvoiceDto invoiceModel, Guid invoiceId, Guid companyId);
         void Delete(Invoice invoice);
         Invoice GetById(Guid id);
         List<Invoice> GetAll();

@@ -10,5 +10,6 @@ namespace EFaturaTakip.DTO.Invoice
     {
         public Guid Id { get; set; }
         public Guid? StockId { get; set; }
+        public Guid InvoiceId { get; set; }
     }
 }

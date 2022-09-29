@@ -10,7 +10,5 @@ namespace EFaturaTakip.DataAccess.Abstract
 {
     public interface IUserRoleDao : IRepositoryBase<UserRole>
     {
-        void UpdateRange(List<UserRole> roles);
-        void RemoveRange(List<UserRole> roles);
     }
 }

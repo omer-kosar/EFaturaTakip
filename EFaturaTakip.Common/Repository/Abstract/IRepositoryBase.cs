@@ -15,9 +15,11 @@ namespace EFaturaTakip.Common.Repository.Abstract
         IQueryable<T> FindByConditionAsQueryable(Expression<Func<T, bool>> expression);
 
         void Create(T entity);
+        void Create(List<T> entities);
         void Update(T entity);
         void Update(List<T> entities);
         void Delete(T entity);
+        void Delete(List<T> entities);
         int Save();
     }
 }

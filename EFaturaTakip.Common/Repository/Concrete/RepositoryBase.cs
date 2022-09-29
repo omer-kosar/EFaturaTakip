@@ -1,5 +1,6 @@
 ﻿using EFaturaTakip.Common.Repository.Abstract;
 using EFaturaTakip.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace EFaturaTakip.Common.Repository.Concrete
@@ -16,13 +17,19 @@ namespace EFaturaTakip.Common.Repository.Concrete
         public void Create(T entity)
         {
             EFaturaTakipContext.Set<T>().Add(entity);
-            Save();
+        }
+        public void Create(List<T> entities)
+        {
+            EFaturaTakipContext.Set<T>().AddRange(entities);
         }
 
         public void Delete(T entity)
         {
             EFaturaTakipContext.Set<T>().Remove(entity);
-            Save();
+        }
+        public void Delete(List<T> entities)
+        {
+            EFaturaTakipContext.Set<T>().RemoveRange(entities);
         }
 
         public IEnumerable<T> FindAll()
@@ -42,13 +49,13 @@ namespace EFaturaTakip.Common.Repository.Concrete
 
         public void Update(T entity)
         {
+            EFaturaTakipContext.Entry(entity).State = EntityState.Modified;
             EFaturaTakipContext.Update<T>(entity);
-            Save();
         }
         public void Update(List<T> entities)
         {
+            //EFaturaTakipContext.Entry(entities).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             EFaturaTakipContext.UpdateRange(entities);
-            Save();
         }
 
         public T Get(Expression<Func<T, bool>> expression)

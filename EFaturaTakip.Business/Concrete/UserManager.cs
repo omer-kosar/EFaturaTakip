@@ -27,10 +27,12 @@ namespace EFaturaTakip.Business.Concrete
             if (isExistUser)
                 throw new UserExistException("Bu telefon numarası veya EMail ile kullanıcı kayıtlıdır.");
             _userDao.Create(user);
+            Save();
         }
         public void Delete(User entity)
         {
             _userDao.Delete(entity);
+            Save();
         }
 
         public User GetUser(Expression<Func<User, bool>> filter)
@@ -46,15 +48,17 @@ namespace EFaturaTakip.Business.Concrete
         public void Update(User entity)
         {
             _userDao.Update(entity);
+            Save();
         }
         public void UpdateWithRoles(User entity, List<Guid> roles)
         {
             var recordedRoles = _userDao.GetUserRoles(entity.Id);
             var deletedRoles = recordedRoles.Where(i => !roles.Contains(i.RoleId)).ToList();
             var addedRoles = roles.Where(i => !recordedRoles.Select(r => r.RoleId).Contains(i)).Select(i => new UserRole { RoleId = i, UserId = entity.Id }).ToList();
-            _userRoleDao.RemoveRange(deletedRoles);
+            _userRoleDao.Delete(deletedRoles);
             entity.Roles = addedRoles;
             _userDao.Update(entity);
+            Save();
         }
         public List<User> SearchFinancialAdvisor(string name, int take = 20)
         {
@@ -64,6 +68,10 @@ namespace EFaturaTakip.Business.Concrete
         public List<User> GetAll()
         {
             return _userDao.GetAllUserWithRoles();
+        }
+        private void Save()
+        {
+            _userDao.Save();
         }
     }
 }

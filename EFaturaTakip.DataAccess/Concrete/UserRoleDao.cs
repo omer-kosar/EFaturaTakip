@@ -16,15 +16,5 @@ namespace EFaturaTakip.DataAccess.Concrete
         {
             _efaturaTakipContext = efaturaTakipContext;
         }
-
-        public void UpdateRange(List<UserRole> roles)
-        {
-            _efaturaTakipContext.UpdateRange(roles);
-        }
-        public void RemoveRange(List<UserRole> roles)
-        {
-            _efaturaTakipContext.RemoveRange(roles);
-        }
-
     }
 }

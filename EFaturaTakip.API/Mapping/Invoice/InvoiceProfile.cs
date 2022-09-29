@@ -16,6 +16,7 @@ namespace EFaturaTakip.API.Mapping.Invoice
                 ;
             CreateMap<InvoiceItemDto, Entities.InvoiceItem>()
                 .ForMember(dest => dest.StockId, opt => opt.MapFrom(src => src.StockId))
+                .ForMember(dest => dest.InvoiceId, opt => opt.MapFrom(src => src.InvoiceId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price))
                 .ForMember(dest => dest.PriceWithTax, opt => opt.MapFrom(src => src.PriceWithTax))
@@ -40,6 +41,7 @@ namespace EFaturaTakip.API.Mapping.Invoice
                 .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPriceWithTax))
                 .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
                 ;
+            CreateMap<Entities.Invoice, Entities.Invoice>();
         }
     }
 }

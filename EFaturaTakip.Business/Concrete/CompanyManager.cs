@@ -32,11 +32,13 @@ namespace EFaturaTakip.Business.Concrete
             if (IsExistCompany(tcknVkn, companyType, company.Id))
                 throw new CompanyExistException("Belirtilen TCKN/VKN ile firma kaydı bulunmaktadır.Firma kaydedilemedi.");
             _companyDao.Create(company);
+            Save();
         }
 
         public void Delete(Company company)
         {
             _companyDao.Delete(company);
+            Save();
         }
 
         public List<Company> GetAll()
@@ -57,6 +59,7 @@ namespace EFaturaTakip.Business.Concrete
             if (existCompany)
                 throw new CompanyExistException("Belirtilen TCKN/VKN ile firma kaydı bulunmaktadır.Firma güncellenemedi.");
             _companyDao.Update(company);
+            Save();
         }
         public List<Company> SearchCompany(string name, int take = 20)
         {
@@ -124,10 +127,15 @@ namespace EFaturaTakip.Business.Concrete
             }
             _companyDao.Update(addedCompanies);
             _companyDao.Update(removedCompanies);
+            Save();
         }
         public List<Company> GetAllWithFilter(Expression<Func<Company, bool>> expression)
         {
             return _companyDao.FindByCondition(expression).ToList();
+        }
+        private void Save()
+        {
+            _companyDao.Save();
         }
     }
 }

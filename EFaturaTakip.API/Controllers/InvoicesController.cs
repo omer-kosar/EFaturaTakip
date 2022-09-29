@@ -7,8 +7,6 @@ using EFaturaTakip.DTO.Invoice;
 using EFaturaTakip.Entities;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace EFaturaTakip.API.Controllers
 {
     [Route("api/[controller]")]
@@ -30,7 +28,6 @@ namespace EFaturaTakip.API.Controllers
             _invoiceItemManager = invoiceItemManager;
         }
 
-        // GET api/<InvoiceController>/5
         [HttpGet("GetList")]
         public IActionResult Get()
         {
@@ -38,6 +35,15 @@ namespace EFaturaTakip.API.Controllers
             var invoiceList = _invoiceManager.GetAllWithFilter(i => i.CompanyId == companyId);
             var invoiceDtoList = _mapper.Map<List<InvoiceListDto>>(invoiceList);
             return Ok(invoiceDtoList);
+        }
+        [HttpGet("GetInvoice/{invoiceId}")]
+        public IActionResult GetInvoice(Guid invoiceId)
+        {
+            var companyId = GetCurrentUserCompanyId();
+            var invoice = _invoiceManager.GetAllWithFilter(i => i.CompanyId == companyId && i.Id == invoiceId).FirstOrDefault();
+            if (invoice is null) return NotFound("Fatura bulunamadı.");
+            var invoiceItemDto = _mapper.Map<InvoiceDto>(invoice);
+            return Ok(invoiceItemDto);
         }
 
         [HttpGet("GetInvoiceItems/{invoiceId}")]
@@ -48,7 +54,6 @@ namespace EFaturaTakip.API.Controllers
             return Ok(invoiceItemDtoList);
         }
 
-        // POST api/<InvoiceController>
         [HttpPost("CreateInvoice")]
         public IActionResult Post([FromBody] InvoiceDto invoice)
         {
@@ -58,10 +63,11 @@ namespace EFaturaTakip.API.Controllers
             return Ok("Fatura kaydedildi.");
         }
 
-        // PUT api/<InvoiceController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(Guid id, [FromBody] InvoiceDto invoiceModel)
         {
+            _invoiceManager.UpdateInvoiceWithItems(invoiceModel, id, GetCurrentUserCompanyId());
+            return Ok("Fatura Güncellendi.");
         }
         [AuthorizeFilter(new EnumUserType[] { EnumUserType.Admin, EnumUserType.TaxPayer })]
         [HttpDelete("delete/{invoiceId}")]

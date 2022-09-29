@@ -57,10 +57,11 @@ namespace EFaturaTakip.API
                      ValidateLifetime = true,
                  };
              });
-            builder.Services.AddDbContext<EFaturaTakipContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbEFaturaTakip"), opt =>
+            builder.Services.AddDbContext<EFaturaTakipContext>(options =>
             {
-                opt.EnableRetryOnFailure();
-            }));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DbEFaturaTakip"));
+                options.EnableSensitiveDataLogging(true);
+            });
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var uiOriginUrl = builder.Configuration.GetSection("AppSettings:UIOriginUrl").Value.Split(',');
@@ -120,7 +121,7 @@ namespace EFaturaTakip.API
                 app.UseSwaggerUI();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseCors("eFaturaTakipOrigin");
 
