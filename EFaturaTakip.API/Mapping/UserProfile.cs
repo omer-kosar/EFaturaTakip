@@ -15,7 +15,6 @@ namespace EFaturaTakip.API.Mapping
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
-                .ForMember(dest => dest.Roles, opt => opt.MapFrom(r => r.Roles.Select(i => new UserRole { RoleId = i })))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.UserType));
         }
     }

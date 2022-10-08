@@ -13,7 +13,9 @@ namespace EFaturaTakip.DTO.User
         public Guid UserId { get; set; }
         [JsonProperty("lastLoginDate")]
         public DateTime LastLoginDate { get; set; }
-        [JsonProperty("roles")]
-        public List<string> Roles { get; set; } = new List<string>();
+
+        public string TypeDescription { get; set; }
+
+        public string CompanyName { get; set; }
     }
 }

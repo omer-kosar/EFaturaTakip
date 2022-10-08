@@ -14,7 +14,7 @@ namespace EFaturaTakip.DataAccess.Abstract
         User GetUser(Expression<Func<User, bool>> filter);
 
         List<User> GetAllUserWithRoles();
-
+        List<User> GetAllUserWithCompany(Expression<Func<User, bool>> filter);
         List<UserRole> GetUserRoles(Guid userId);
         IEnumerable<User> FindByConditionFinincialAdvisor(Expression<Func<User, bool>> expression);
     }

@@ -10,7 +10,5 @@ namespace EFaturaTakip.DTO.User
 {
     public class UserAddDto : BaseUserDto
     {
-        [JsonProperty("roles")]
-        public List<Guid> Roles { get; set; } = new List<Guid>();
     }
 }

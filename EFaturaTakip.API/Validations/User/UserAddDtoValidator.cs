@@ -8,7 +8,7 @@ namespace EFaturaTakip.API.Validations.User
     {
         public UserAddDtoValidator()
         {
-            //RuleFor(user => user.CompanyId).NotEmpty().WithMessage("Firma seçiniz olamaz.");
+            RuleFor(user => user).Must(ValidateCompany).When(user => (EnumUserType)user.UserType != EnumUserType.Admin).WithMessage("Firma seçiniz.");
             RuleFor(user => user.FirstName).NotEmpty().WithMessage("Adı boş olamaz.")
                 .MaximumLength(50).WithMessage("Kullanıcı adı 50 karakterden fazla olamaz.");
 
@@ -25,9 +25,13 @@ namespace EFaturaTakip.API.Validations.User
             .EmailAddress()
             .WithMessage("Geçerli bir Email adresi giriniz.").When(i => !string.IsNullOrEmpty(i.Email));
 
-            RuleFor(user => user.Roles).NotEmpty().WithMessage("Rol seçiniz");
-
             RuleFor(user => user.UserType).Must(userType => Enum.IsDefined(typeof(EnumUserType), userType)).WithMessage("Kullanıcı tipi seçiniz");
+        }
+
+        private bool ValidateCompany(UserAddDto model)
+        {
+            if (!model.CompanyId.HasValue && model.CompanyId == Guid.Empty) return false;
+            return true;
         }
     }
 }

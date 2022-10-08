@@ -11,6 +11,5 @@ namespace EFaturaTakip.DTO.User
 {
     public class UserUpdateDto : BaseUserDto
     {
-        public List<RoleDto> Roles { get; set; }
     }
 }

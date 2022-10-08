@@ -11,18 +11,13 @@ namespace EFaturaTakip.Business.Concrete
     public class UserManager : IUserManager
     {
         private readonly IUserDao _userDao;
-        private readonly IUserRoleDao _userRoleDao;
-        private readonly ICompanyDao _companyDao;
-        public UserManager(IUserDao userDao, IUserRoleDao userRoleDao, ICompanyDao companyDao)
+        public UserManager(IUserDao userDao)
         {
             _userDao = userDao;
-            _userRoleDao = userRoleDao;
-            _companyDao = companyDao;
         }
 
         public void Create(User user)
         {
-            user.Id = Guid.NewGuid();
             bool isExistUser = IsExistUser(user.Email, user.Phone);
             if (isExistUser)
                 throw new UserExistException("Bu telefon numarası veya EMail ile kullanıcı kayıtlıdır.");
@@ -50,16 +45,6 @@ namespace EFaturaTakip.Business.Concrete
             _userDao.Update(entity);
             Save();
         }
-        public void UpdateWithRoles(User entity, List<Guid> roles)
-        {
-            var recordedRoles = _userDao.GetUserRoles(entity.Id);
-            var deletedRoles = recordedRoles.Where(i => !roles.Contains(i.RoleId)).ToList();
-            var addedRoles = roles.Where(i => !recordedRoles.Select(r => r.RoleId).Contains(i)).Select(i => new UserRole { RoleId = i, UserId = entity.Id }).ToList();
-            _userRoleDao.Delete(deletedRoles);
-            entity.Roles = addedRoles;
-            _userDao.Update(entity);
-            Save();
-        }
         public List<User> SearchFinancialAdvisor(string name, int take = 20)
         {
             if (string.IsNullOrWhiteSpace(name)) return _userDao.FindByConditionFinincialAdvisor(i => i.Type == (int)EnumUserType.Accountant).Take(take).ToList();
@@ -69,6 +54,11 @@ namespace EFaturaTakip.Business.Concrete
         {
             return _userDao.GetAllUserWithRoles();
         }
+        public List<User> GetAllUserWithCompany(Expression<Func<User, bool>> filter = null)
+        {
+            return _userDao.GetAllUserWithCompany(filter);
+        }
+
         private void Save()
         {
             _userDao.Save();

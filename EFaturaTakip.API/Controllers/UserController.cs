@@ -27,7 +27,7 @@ namespace EFaturaTakip.API.Controllers
         [HttpGet("GetList")]
         public IActionResult GetList()
         {
-            var userList = _userManager.GetAll();
+            var userList = _userManager.GetAllUserWithCompany();
             var userDtoList = _mapper.Map<List<User>, List<UserListDto>>(userList);
             return Ok(userDtoList);
         }
@@ -57,7 +57,7 @@ namespace EFaturaTakip.API.Controllers
         {
             var updatedUser = _mapper.Map<User>(userModel);
             updatedUser.Id = id;
-            _userManager.UpdateWithRoles(updatedUser, userModel.Roles.Select(i => i.Id).ToList());
+            _userManager.Update(updatedUser);
             return Ok("Kullanıcı güncellendi.");
         }
 
