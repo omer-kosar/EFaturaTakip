@@ -13,6 +13,7 @@ namespace EFaturaTakip.Entities
         public Guid CustomerId { get; set; }
         public DateTime Date { get; set; }
         public string? Comment { get; set; }
+        public string EInvoiceNumber { get; set; } = string.Empty;
         public virtual ICollection<InvoiceItem> InvoiceItems { get; set; }
         public virtual Company Company { get; set; }
         public virtual Company Customer { get; set; }

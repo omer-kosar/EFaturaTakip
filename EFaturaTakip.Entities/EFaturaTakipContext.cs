@@ -12,7 +12,7 @@ namespace EFaturaTakip.Entities
     {
         public EFaturaTakipContext(DbContextOptions options) : base(options)
         {
-
+            ChangeTracker.LazyLoadingEnabled = false;
         }
 
         public DbSet<User> User { get; set; }

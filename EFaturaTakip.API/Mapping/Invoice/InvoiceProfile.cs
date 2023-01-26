@@ -29,6 +29,8 @@ namespace EFaturaTakip.API.Mapping.Invoice
             CreateMap<Entities.Invoice, InvoiceListDto>()
                 .ForMember(dest => dest.InvoiceId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
+                .ForMember(dest => dest.EInvoiceId, opt => opt.MapFrom(src => src.EInvoiceId))
+                .ForMember(dest => dest.EInvoiceNumber, opt => opt.MapFrom(src => src.EInvoiceNumber))
                 .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.InvoiceItems.Sum(i => i.TotalPriceWithTax)))
                 .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.Customer.Type == (int)EnumCompanyType.Corporate ? src.Customer.Title : $"{src.Customer.FirstName} {src.Customer.LastName}"))
                 ;
@@ -41,7 +43,6 @@ namespace EFaturaTakip.API.Mapping.Invoice
                 .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPriceWithTax))
                 .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
                 ;
-            CreateMap<Entities.Invoice, Entities.Invoice>();
         }
     }
 }

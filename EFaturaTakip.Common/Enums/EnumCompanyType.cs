@@ -13,7 +13,7 @@ namespace EFaturaTakip.Common.Enums
         [Description("Bireysel Kişi")]
         Person = 1,
         [Description("Şahıs Firması")]
-        SoleProprietorship = 2,
+        PrivateCompany = 2,
         [Description("Tüzel")]
         Corporate = 3
     }

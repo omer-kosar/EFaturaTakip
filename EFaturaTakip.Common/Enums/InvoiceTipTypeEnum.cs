@@ -4,7 +4,7 @@ namespace EFaturaTakip.Common.Enums
 {
     public enum InvoiceTipTypeEnum
     {
-        [Description("Satış")]
+        [Description("SATIS")]
         Sales = 0,
         [Description("Iade")]
         Return = 1,

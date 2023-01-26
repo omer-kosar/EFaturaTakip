@@ -4,6 +4,7 @@ using EFaturaTakip.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFaturaTakip.Entities.Migrations
 {
     [DbContext(typeof(EFaturaTakipContext))]
-    partial class EFaturaTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20221015164646_QuantityDecimal")]
+    partial class QuantityDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,10 +152,6 @@ namespace EFaturaTakip.Entities.Migrations
                     b.Property<Guid>("EInvoiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EInvoiceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
@@ -224,17 +222,17 @@ namespace EFaturaTakip.Entities.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b91b11ac-379a-4246-a9f5-cb05469b1b91"),
+                            Id = new Guid("a4eb0d28-e6cc-4acb-a44c-a8b952cfd353"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("8d4b2d04-abc9-4a99-9e6a-c7b94b23e5c4"),
+                            Id = new Guid("41ce26cd-afca-49bd-8a11-fd79a049d87a"),
                             Name = "TaxPayer"
                         },
                         new
                         {
-                            Id = new Guid("d901eb93-f0a1-4f14-ae37-ce6198acfae0"),
+                            Id = new Guid("523e697d-cf89-4b4f-8405-e28f8f71fd88"),
                             Name = "Accountant"
                         });
                 });

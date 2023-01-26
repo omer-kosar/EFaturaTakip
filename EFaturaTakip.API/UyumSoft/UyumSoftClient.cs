@@ -1,6 +1,7 @@
 ﻿using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.DTO.UyumSoft;
+using EFaturaTakip.DTO.UyumSoft.Model;
 using EFaturaTakip.Exceptions.Invoice;
 using Newtonsoft.Json;
 using System.Text;
@@ -135,6 +136,20 @@ namespace EFaturaTakip.API.UyumSoft
                 }
             };
             return await ApiCall<UserAliassesResponse>(requestModel);
+        }
+        public async Task<GidenInvoiceIdentitiesResponse> SendInvoice(List<GidenInvoiceInfo> invoices,UserInfo userInfo)
+        {
+            var requestModel = new RequestParameters
+            {
+                Action = "SendInvoice",
+                parameters = new SendInvoiceParameters
+                {
+                    Invoices = invoices,
+                    userInfo = userInfo
+                }
+            };
+            var aa = await ApiCall<GidenInvoiceIdentitiesResponse>(requestModel);
+            return aa;
         }
         private async Task<T> ApiCall<T>(RequestParameters requestModel)
         {

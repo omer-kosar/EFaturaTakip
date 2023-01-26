@@ -22,5 +22,9 @@ namespace EFaturaTakip.DataAccess.Concrete
             return _efaturaTakipContext.Invoice.Include(i => i.InvoiceItems).Include(i => i.Customer).Where(expression);
         }
 
+        public Invoice GetById(Guid id)
+        {
+            return _efaturaTakipContext.Invoice.Include(i => i.InvoiceItems).ThenInclude(i => i.Stock).Include(i => i.Customer).First(i => i.Id == id);
+        }
     }
 }

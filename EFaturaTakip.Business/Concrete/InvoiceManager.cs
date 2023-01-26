@@ -23,18 +23,8 @@ namespace EFaturaTakip.Business.Concrete
 
         public void Create(Invoice invoice)
         {
-            //SetInvoiceItemIds(invoice);
             _invoiceDao.Create(invoice);
             Save();
-        }
-        private void SetInvoiceItemIds(Invoice invoice)
-        {
-            if (invoice is null || !invoice.InvoiceItems.Any()) return;
-            invoice.Id = Guid.NewGuid();
-            foreach (var item in invoice.InvoiceItems)
-            {
-                item.Id = Guid.NewGuid();
-            }
         }
         public void Delete(Invoice invoice)
         {
@@ -54,12 +44,13 @@ namespace EFaturaTakip.Business.Concrete
 
         public Invoice GetById(Guid id)
         {
-            return _invoiceDao.Get(i => i.Id == id);
+            return _invoiceDao.GetById(id);
         }
 
         public void Update(Invoice invocie)
         {
             _invoiceDao.Update(invocie);
+            Save();
         }
         public Invoice UpdateInvoiceWithItems(InvoiceDto invoiceModel, Guid invoiceId, Guid companyId)
         {

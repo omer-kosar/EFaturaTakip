@@ -8,7 +8,7 @@ namespace EFaturaTakip.DTO.Invoice
 {
     public class BaseInvoiceItemDto
     {
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal PriceWithTax { get; set; }
         public int Tax { get; set; }

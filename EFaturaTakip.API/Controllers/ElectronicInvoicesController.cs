@@ -6,6 +6,7 @@ using EFaturaTakip.Common.Enums;
 using EFaturaTakip.DataAccess.Abstract;
 using EFaturaTakip.DTO.Invoice;
 using EFaturaTakip.DTO.UyumSoft;
+using EFaturaTakip.DTO.UyumSoft.Model;
 using EFaturaTakip.Exceptions.Invoice;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,9 @@ namespace EFaturaTakip.API.Controllers
         private readonly UserInfo _userInfo;
         private readonly ICompanyManager _companyManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public ElectronicInvoicesController(UyumSoftClient uyumSoftClient, IEMailSender emailSender, ICompanyManager companyManager, IHttpContextAccessor httpContextAccessor)
+        private readonly IElectronicInvoiceManager _electronicInvoiceManager;
+        private readonly IInvoiceManager _invoiceManager;
+        public ElectronicInvoicesController(UyumSoftClient uyumSoftClient, IEMailSender emailSender, ICompanyManager companyManager, IHttpContextAccessor httpContextAccessor, IElectronicInvoiceManager electronicInvoiceManager, IInvoiceManager invoiceManager)
         {
             _uyumSoftClient = uyumSoftClient;
             _emailSender = emailSender;
@@ -39,6 +41,8 @@ namespace EFaturaTakip.API.Controllers
                 Username = GetServiceUserName(companyId),
                 Password = GetServiceUserPassword(companyId)
             };
+            _electronicInvoiceManager = electronicInvoiceManager;
+            _invoiceManager = invoiceManager;
         }
 
         [HttpGet("InboxInvoiceList")]
@@ -161,7 +165,26 @@ namespace EFaturaTakip.API.Controllers
             await _emailSender.SendEmailAsync(message);
             return Ok("Fatura mail olarak gönderildi");
         }
+        [AuthorizeFilter(new EnumUserType[] { EnumUserType.TaxPayer })]
+        [HttpGet("ConvertInvoiceToElectronicInvoice")]
+        public async Task<IActionResult> ConvertInvoiceToElectronicInvoice(Guid invoiceId, InvoiceTypes invoiceScenarioType, InvoiceTipTypeEnum invoiceType)
+        {
+            var invoice = _invoiceManager.GetById(invoiceId);
+            if (!invoice.EInvoiceId.Equals(Guid.Empty))
+                return BadRequest("Bu fatura daha önce elektronik faturaya dönüştürülmüştür.");
 
+            var currentCompany = _companyManager.GetById(GetCompanyId());
+            var electronicInvoice = _electronicInvoiceManager.ConvertFromInvoiceToElectronicInvoice(currentCompany, invoice, invoiceScenarioType, invoiceType);
+            var result = await _uyumSoftClient.SendInvoice(new List<GidenInvoiceInfo> { electronicInvoice }, _userInfo);
+            if (!result.Data.IsSucceded)
+            {
+                return BadRequest(result.Data.Message);
+            }
+            invoice.EInvoiceId = Guid.Parse(result.Data.Value[0].id);
+            invoice.EInvoiceNumber = result.Data.Value[0].number;
+            _invoiceManager.Update(invoice);
+            return Ok("Fatura başarılı bir şekilde dönüştürüldü.");
+        }
         private string GetServiceUserName(Guid companyId)
         {
             var company = _companyManager.GetById(companyId);

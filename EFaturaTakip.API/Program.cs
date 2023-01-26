@@ -102,6 +102,8 @@ namespace EFaturaTakip.API
             builder.Services.AddTransient<IInvoiceDao, InvoiceDao>();
             builder.Services.AddTransient<IInvoiceItemManager, InvoiceItemManager>();
             builder.Services.AddTransient<IInvoiceItemDao, InvoiceItemDao>();
+            builder.Services.AddTransient<IElectronicInvoiceManager, ElectronicInvoiceManager>();
+
             builder.Services.AddScoped<UyumSoftClient>();
 
             builder.Services.AddHttpContextAccessor();

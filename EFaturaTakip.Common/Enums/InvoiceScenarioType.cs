@@ -10,5 +10,6 @@ namespace EFaturaTakip.Common.Enums
     {
         eInvoice,
         eArchive,
+        Automated
     }
 }

@@ -15,10 +15,10 @@ namespace EFaturaTakip.Common.Providers
         public static string CurrencyFormat(decimal value, int paraBirimId)
         {
             var dc = $"{value:#,##0.00;}";
-            return Convert.ToDecimal(dc) != value
+            string aa= Convert.ToDecimal(dc) != value
                 ? string.Format(Culture, "{0:#,####0.0000;} {1}", value, CultureTool.DefaultParaIconu)
                 : string.Format(Culture, "{0:#,##0.00;} {1}", value, CultureTool.DefaultParaIconu);
-
+            return aa;
             //var dc = $"{value:#,##0.00;}";
             //return Convert.ToDecimal(dc) != value
             //    ? string.Format(Culture, "{0:#,####0.0000;} {1}", value, EnumUtilities.GetDescription(typeof(ParaBirimEnum), paraBirimId))

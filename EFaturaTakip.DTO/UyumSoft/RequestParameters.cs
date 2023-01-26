@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EFaturaTakip.DTO.UyumSoft.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,5 +61,9 @@ namespace EFaturaTakip.DTO.UyumSoft
         [JsonProperty("invoiceIds")]
         public List<string> InvoiceIds { get; set; }
     }
-
+    public class SendInvoiceParameters : BaseParameters
+    {
+        [JsonProperty("invoices")]
+        public List<GidenInvoiceInfo> Invoices { get; set; }
+    }
 }

@@ -6,7 +6,7 @@ namespace EFaturaTakip.Common.Enums
     {
         [Description("Temel")]
         BaseInvoice = 0,
-        [Description("Ticari")]
+        [Description("TICARIFATURA")]
         ComercialInvoice = 1,
         [Description("Yolcu")]
         InvoiceWithPassanger = 2,
