@@ -139,11 +139,11 @@ namespace EFaturaTakip.Business.Concrete
         }
         private GidenInvoiceInfo CreateInvoiceInformations(GidenInvoiceType electronicInvoice, Company company, Invoice invoice, InvoiceTypes invoiceScenarioType, InvoiceTipTypeEnum invoiceType)
         {
-            electronicInvoice.ProfileID = new IdentificationId { Value = EnumUtilities.GetDescription(typeof(InvoiceTypes), (int)invoiceScenarioType) };
+            electronicInvoice.ProfileID = new IdentificationId { Value = EnumUtilities.GetName(typeof(InvoiceTypes), (int)invoiceScenarioType) };
             electronicInvoice.CopyIndicator = new IndicatorType { Value = false };
             electronicInvoice.IssueDate = new DateType { Value = invoice.Date.ToString("yyyy.MM.dd") };//format bu şekilde olmalı. Diğer türlü olursa hata veriyor.
             electronicInvoice.IssueTime = new TimeType { Value = invoice.Date.ToShortTimeString() };
-            electronicInvoice.InvoiceTypeCode = new Code { Value = EnumUtilities.GetDescription(typeof(InvoiceTipTypeEnum), (int)invoiceType) };
+            electronicInvoice.InvoiceTypeCode = new Code { Value = EnumUtilities.GetName(typeof(InvoiceTipTypeEnum), (int)invoiceType) };
             electronicInvoice.Notlar = new List<Namee> { new Namee { Value = invoice.Comment ?? string.Empty } };
             electronicInvoice.DocumentCurrencyCode = new Code { Value = "TRY" };//USD EUR
             electronicInvoice.PricingCurrencyCode = new Code { Value = "TRY" };
@@ -412,29 +412,53 @@ namespace EFaturaTakip.Business.Concrete
             };
             gidenInvoiceInfo.EArchiveInvoiceInfo = earchiveinfo;
         }
+        //public Dictionary<int, decimal> KdvMatraklarForEFatura => KdvMatrakHesaplaForEFatura();
 
+        //private Dictionary<int, decimal> KdvMatrakHesaplaForEFatura(List<InvoiceItem> invoiceItems)
+        //{
+        //    var kdvMatraklar = invoiceItems.Where(i => i.Tax != 0).GroupBy(i => i.Tax)
+        //           .Select(a => new KeyValuePair<int, decimal>(a.Key, a.Sum(i => i.TotalPriceWithTax-i.TotalPrice)))
+        //           .ToDictionary(x => x.Key, x => x.Value);
+        //    return kdvMatraklar;
+        //    //if (!(AraToplamIndirim > 0))
+        //    //    return kdvMatraklar;
+
+        //    //İndirimi yüzde olarak alıyoruz
+        //    //var satirBrutToplam = AraToplamIndirimOran == (int)OranEnum.Yuzde
+        //    //    ? 0
+        //    //    : FaturaSatirlar?.Sum(i => i.BrutToplam) ?? 0;
+
+        //    //var indirimYuzde = AraToplamIndirimOran == (int)OranEnum.Yuzde
+        //    //    ? AraToplamIndirim
+        //    //    : ((AraToplamIndirim / satirBrutToplam) * 100);
+
+        //    //return kdvMatraklar.ToDictionary(item => item.Key, item => item.Value * (1 - (indirimYuzde / 100)));
+        //}
         private void CreateFaturaGenelKDV(GidenInvoiceType electronicInvoice, Invoice invoice)
         {
-            //todo: kdv matrahlarını sor
-            electronicInvoice.TaxTotal = new List<TaxTotal>();
-            //foreach (var kdvMatragi in _model.KdvMatraklarForEFatura)
-            //{
-            var TaxTotal = new TaxTotal();
-            TaxTotal.TaxSubtotal = new List<TaxSubTotal>();
-            var taxSubTotal = new TaxSubTotal();
-            taxSubTotal.TaxCategory = new TaxCategory();
-            taxSubTotal.TaxCategory.TaxScheme = new TaxScheme
-            {
-                TaxTypeCode = new Code { Value = "0015" },
-                TaxName = new Namee { Value = "KDV" }
-            };
-            taxSubTotal.Percent = new NumericType { Value = Math.Round(Convert.ToDecimal(8), 2) };
-            taxSubTotal.TaxAmount = new AmountType { Value = Math.Round(Convert.ToDecimal(8), 2), CurrencyID = "TRY" };
-            TaxTotal.TaxSubtotal.Add(taxSubTotal);
+            var kdvMatraklar = invoice.InvoiceItems.Where(i => i.Tax != 0).GroupBy(i => i.Tax)
+                   .Select(a => new KeyValuePair<int, decimal>(a.Key, a.Sum(i => i.TotalPriceWithTax - i.TotalPrice)))
+                   .ToDictionary(x => x.Key, x => x.Value);
 
-            TaxTotal.TaxAmount = new AmountType { Value = Math.Round(Convert.ToDecimal(8), 2), CurrencyID = "TRY" };
-            electronicInvoice.TaxTotal.Add(TaxTotal);
-            //}
+            electronicInvoice.TaxTotal = new List<TaxTotal>();
+            foreach (var kdvMatragi in kdvMatraklar)
+            {
+                var TaxTotal = new TaxTotal();
+                TaxTotal.TaxSubtotal = new List<TaxSubTotal>();
+                var taxSubTotal = new TaxSubTotal();
+                taxSubTotal.TaxCategory = new TaxCategory();
+                taxSubTotal.TaxCategory.TaxScheme = new TaxScheme
+                {
+                    TaxTypeCode = new Code { Value = kdvMatragi.Key.ToString() },
+                    TaxName = new Namee { Value = "KDV" }
+                };
+                taxSubTotal.Percent = new NumericType { Value = Math.Round(Convert.ToDecimal(kdvMatragi.Key), 2) };
+                taxSubTotal.TaxAmount = new AmountType { Value = Math.Round(Convert.ToDecimal(kdvMatragi.Value), 2), CurrencyID = "TRY" };
+                TaxTotal.TaxSubtotal.Add(taxSubTotal);
+
+                TaxTotal.TaxAmount = new AmountType { Value = Math.Round(Convert.ToDecimal(kdvMatragi.Value), 2), CurrencyID = "TRY" };
+                electronicInvoice.TaxTotal.Add(TaxTotal);
+            }
 
         }
         private void CreateMonetaryTotal(GidenInvoiceType electronicInvoice, Invoice invoice)

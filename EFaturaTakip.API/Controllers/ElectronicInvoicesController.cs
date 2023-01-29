@@ -149,6 +149,7 @@ namespace EFaturaTakip.API.Controllers
         [HttpPost("SendMail/{invoiceId}")]
         public async Task<IActionResult> Post([FromRoute] Guid invoiceId, [FromBody] InvioceEmailDto emailModel)
         {
+            //todo: email içerikleri düzeltilecek
             var result = await _uyumSoftClient.GetInboxInvoicePdf(invoiceId, _userInfo);
             if (!result.Data.IsSucceded) return BadRequest(result.Data.Message);
             var message = new EMailMessage(new string[] { emailModel.EMailAdress }, "Test email async", "This is the content from our async email.", new EMailAttachment("application/pdf", "fatura", result.Data.Value.InvoicePdfAsByte));

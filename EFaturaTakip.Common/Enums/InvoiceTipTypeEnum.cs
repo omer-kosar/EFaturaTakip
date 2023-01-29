@@ -4,27 +4,23 @@ namespace EFaturaTakip.Common.Enums
 {
     public enum InvoiceTipTypeEnum
     {
-        [Description("SATIS")]
-        Sales = 0,
+        [Description("Satış")]
+        SATIS = 0,
         [Description("Iade")]
-        Return = 1,
+        IADE = 1,
         [Description("Tevkifat")]
-        Tax = 2,
+        TEVKIFAT = 2,
         [Description("İstisna")]
-        Exception = 3,
+        ISTISNA = 3,
         [Description("Özel Matrah")]
-        TaxBase = 4,
+        OZELMATRAH = 4,
         [Description("İhraç Kayıtlı")]
-        ExportSaved = 6,
+        IHRACKAYITLI = 6,
         [Description("Sgk")]
-        Sgk = 7,
+        SGK = 7,
         [Description("Komisyoncu")]
-        Broker = 8,
-        [Description("Hal Satış")]
-        HksSales = 9,
-        [Description("Hal Komisyoncu")]
-        HksBroker = 10,
+        KOMISYONCU = 8,
         [Description("Tevkifat İade")]
-        WithholdingReturn = 11
+        TEVKIFATIADE = 11
     }
 }

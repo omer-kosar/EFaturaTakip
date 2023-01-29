@@ -16,8 +16,8 @@ namespace EFaturaTakip.DTO.UyumSoft
         public InvoiceTypes Type { get; set; }
         public int TypeCode { get; set; }
         public string TypeCodeF => EnumUtilities.GetDescription(Type);
-        public string TypeCodeRenk => Type == InvoiceTypes.BaseInvoice ? "#90a4ae" :
-           Type == InvoiceTypes.ComercialInvoice ? "Coral" : "#ff6666";
+        public string TypeCodeRenk => Type == InvoiceTypes.TEMELFATURA ? "#90a4ae" :
+           Type == InvoiceTypes.TEMELFATURA ? "Coral" : "#ff6666";
         public string TargetTcknVkn { get; set; }
         public string TargetTitle { get; set; }
         public string EnvelopeIdentifier { get; set; }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EFaturaTakip.Common.Enums;
+using EFaturaTakip.Common.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,8 +18,8 @@ namespace EFaturaTakip.Common.Providers
         {
             var dc = $"{value:#,##0.00;}";
             string aa= Convert.ToDecimal(dc) != value
-                ? string.Format(Culture, "{0:#,####0.0000;} {1}", value, CultureTool.DefaultParaIconu)
-                : string.Format(Culture, "{0:#,##0.00;} {1}", value, CultureTool.DefaultParaIconu);
+                ? string.Format(Culture, "{0:#,####0.0000;} {1}", value, EnumUtilities.GetDescription(typeof(ParaBirimEnum), paraBirimId))
+                : string.Format(Culture, "{0:#,##0.00;} {1}", value, EnumUtilities.GetDescription(typeof(ParaBirimEnum), paraBirimId));
             return aa;
             //var dc = $"{value:#,##0.00;}";
             //return Convert.ToDecimal(dc) != value
